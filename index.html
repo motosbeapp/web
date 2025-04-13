@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recepción de Vehículos</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container" id="formToPrint">
+        <header>
+            <h1>Formulario de Recepción de Vehículos</h1>
+        </header>
+
+        <form id="vehicleForm">
+            <div class="form-section">
+                <div class="order-number">
+                    <label>Orden de Servicio N°:</label>
+                    <span id="orderNumber"></span>
+                </div>
+                <div class="date-field">
+                    <label>Fecha de Ingreso:</label>
+                    <span id="currentDate"></span>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Operaciones</h2>
+                <div class="operations">
+                    <label>
+                        <input type="checkbox" name="operation" value="revision"> Revisión y mantenimiento
+                    </label>
+                    <label>
+                        <input type="checkbox" name="operation" value="reparacion"> Reparación
+                    </label>
+                    <label>
+                        <input type="checkbox" name="operation" value="garantia"> Garantía
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Datos del Propietario</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="ownerName">Nombre:</label>
+                        <input type="text" id="ownerName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerID">Cédula:</label>
+                        <input type="text" id="ownerID" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerPhone">Teléfono:</label>
+                        <input type="tel" id="ownerPhone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ownerEmail">Correo:</label>
+                        <input type="email" id="ownerEmail" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Datos de la Motocicleta</h2>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="model">Modelo:</label>
+                        <input type="text" id="model" required>
+                    </div>
+                    <div class="form-group chassis-photo-container">
+                        <label for="chassisSerial">Serial del Chasis:</label>
+                        <input type="text" id="chassisSerial" required>
+                        <input type="file" id="chassisPhoto" accept="image/*" class="photo-input">
+                        <div id="chassisPhotoPreview" class="photo-preview"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="engineSerial">Serial del Motor:</label>
+                        <input type="text" id="engineSerial" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="displacement">Cilindrada:</label>
+                        <input type="text" id="displacement" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="plate">Placa:</label>
+                        <input type="text" id="plate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mileage">Kilometraje:</label>
+                        <input type="number" id="mileage" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="color">Color:</label>
+                        <input type="text" id="color" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="year">Año:</label>
+                        <input type="number" id="year" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Inventario y Estado Físico</h2>
+                <div class="inventory-grid">
+                    <label><input type="checkbox" name="inventory" value="mirrors"> Espejos</label>
+                    <label><input type="checkbox" name="inventory" value="sidePanels"> Tapas laterales</label>
+                    <label><input type="checkbox" name="inventory" value="frontTurn"> Vías delanteras</label>
+                    <label><input type="checkbox" name="inventory" value="rearTurn"> Vías traseras</label>
+                    <label><input type="checkbox" name="inventory" value="paint"> Buen estado de pintura</label>
+                    <label><input type="checkbox" name="inventory" value="seat"> Asiento buen estado</label>
+                    <label><input type="checkbox" name="inventory" value="frontFender"> Guardafango delantero</label>
+                    <label><input type="checkbox" name="inventory" value="rearFender"> Guardafango Trasero</label>
+                    <label><input type="checkbox" name="inventory" value="headlight"> Luz foco frontal</label>
+                    <label><input type="checkbox" name="inventory" value="battery"> Batería</label>
+                    <label><input type="checkbox" name="inventory" value="tank"> Tanque buen estado</label>
+                    <label><input type="checkbox" name="inventory" value="switch"> Switch principal</label>
+                    <label><input type="checkbox" name="inventory" value="chain"> Cadena</label>
+                    <label><input type="checkbox" name="inventory" value="handle"> Manecilla</label>
+                    <label><input type="checkbox" name="inventory" value="frontWheel"> Rueda delantera</label>
+                    <label><input type="checkbox" name="inventory" value="rearWheel"> Rueda trasera</label>
+                    <label><input type="checkbox" name="inventory" value="alarm"> Alarma</label>
+                    <label><input type="checkbox" name="inventory" value="keys"> Llaveros</label>
+                    <label><input type="checkbox" name="inventory" value="stopLight"> Luz stop</label>
+                    <label><input type="checkbox" name="inventory" value="horn"> Corneta</label>
+                    <label><input type="checkbox" name="inventory" value="tools"> Herramientas</label>
+                    <label><input type="checkbox" name="inventory" value="helmet"> Casco</label>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Fotografía del Vehículo</h2>
+                <div class="photo-upload">
+                    <input type="file" id="vehiclePhoto" accept="image/*">
+                    <div id="photoPreview" class="photo-preview"></div>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h2>Observaciones Generales</h2>
+                <textarea id="observations" rows="4"></textarea>
+            </div>
+
+            <div class="form-section">
+                <h2>Reporte del Cliente</h2>
+                <textarea id="clientReport" rows="4"></textarea>
+            </div>
+
+            <div class="conditions">
+                <p><strong>Condiciones:</strong> En caso de incendio, accidentes, terremotos, la empresa no responderá por los desperfectos ocasionados a la motocicleta, ni por los objetos dejados en ella.</p>
+                <ol>
+                    <li>Todos los trabajos realizados a la motocicleta deberán ser cancelados en el momento de su retiro.</li>
+                    <li>En el caso que la reparación necesite de la preparación de un presupuesto, una vez dado a conocer se otorga un plazo de 24 horas para autorizar o no el mismo, y el cliente en el segundo de los casos deberá retirar la motocicleta al vencer el mismo plazo.</li>
+                    <li>Se entiende que quien contrata y ordena el trabajo descrito, es el propietario de la motocicleta, o está autorizado por el propietario quien conoce y acepta estas condiciones que son parte integrante del contrato que se celebra y que consta en este documento.</li>
+                </ol>
+            </div>
+
+            <div class="signatures">
+                <div class="signature-box">
+                    <p>Firma del Cliente</p>
+                </div>
+                <div class="signature-box">
+                    <p>Firma del Encargado de Garantías</p>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" id="downloadPdf">Descargar PDF</button>
+                <button type="reset">Limpiar Formulario</button>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
