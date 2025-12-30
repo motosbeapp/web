@@ -6,15 +6,12 @@
     <title>BELMOTOS - Gestión Técnica</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons (pinned to v0.286.0 recommended for stability) -->
-    <script src="https://unpkg.com/lucide@0.286.0"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <!-- jsPDF -->
     <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
-    <!-- date-fns (ESM import exposed as global) -->
-    <script type="module">
-      import * as dateFns from 'https://unpkg.com/date-fns@2.30.0/esm/index.js';
-      window.dateFns = dateFns;
-    </script>
+    <!-- date-fns -->
+    <script src="https://unpkg.com/date-fns@2.30.0/esm/index.js"></script>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -174,7 +171,7 @@
         <!-- Header para móvil -->
         <header class="md:hidden flex items-center justify-between p-4 bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-lg">
             <div class="flex items-center">
-                <button id="mobile-menu-btn" type="button" class="mr-3">
+                <button id="mobile-menu-btn" class="mr-3">
                     <i data-lucide="menu" class="w-6 h-6"></i>
                 </button>
                 <div class="flex items-center">
@@ -202,7 +199,7 @@
                             <p class="text-emerald-200 text-xs">Gestión Técnica</p>
                         </div>
                     </div>
-                    <button id="close-mobile-menu" type="button">
+                    <button id="close-mobile-menu">
                         <i data-lucide="x" class="w-8 h-8"></i>
                     </button>
                 </div>
@@ -351,7 +348,7 @@
                         <div class="bg-slate-50 rounded-2xl p-6">
                             <label class="block text-slate-700 mb-4">Problemas reportados por el cliente *</label>
                             <textarea id="client-report" rows="3" required 
-                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea"
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
                                       placeholder="Describa los problemas que el cliente reporta con la moto..."></textarea>
                         </div>
                     </div>
@@ -368,7 +365,7 @@
                         <div class="bg-slate-50 rounded-2xl p-6">
                             <label class="block text-slate-700 mb-4">Observaciones del técnico de recepción</label>
                             <textarea id="technical-observations" rows="3" 
-                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea"
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
                                       placeholder="Registre aquí sus observaciones técnicas iniciales..."></textarea>
                         </div>
                     </div>
@@ -384,7 +381,7 @@
                         
                         <div class="bg-slate-50 rounded-2xl p-4">
                             <div class="max-h-[600px] overflow-y-auto custom-scrollbar">
-                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3" id="checklist-root">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                     <!-- Los items del checklist se insertarán aquí -->
                                 </div>
                             </div>
@@ -405,7 +402,7 @@
                                 <div>
                                     <label class="block text-slate-700 mb-4">Foto General de la Moto</label>
                                     <div class="file-input-wrapper">
-                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center">
+                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
                                             <i data-lucide="upload" class="w-12 h-12 mb-4"></i>
                                             <span>Haga clic para subir foto</span>
                                             <span class="text-sm mt-2">O arrastre y suelte</span>
@@ -423,7 +420,7 @@
                                 <div>
                                     <label class="block text-slate-700 mb-4">Foto del Serial del Chasis</label>
                                     <div class="file-input-wrapper">
-                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center">
+                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
                                             <i data-lucide="upload" class="w-12 h-12 mb-4"></i>
                                             <span>Haga clic para subir foto</span>
                                             <span class="text-sm mt-2">O arrastre y suelte</span>
@@ -475,7 +472,7 @@
                         <button type="reset" class="px-8 py-3 border-2 border-slate-300 text-slate-700 rounded-2xl hover:bg-slate-50 transition-all duration-300 font-medium">
                             Limpiar formulario
                         </button>
-                        <button type="submit" id="save-reception" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all font-medium flex items-center justify-center">
+                        <button type="submit" id="save-reception" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-xl font-medium flex items-center justify-center">
                             <i data-lucide="save" class="mr-2"></i>
                             Guardar y generar orden
                         </button>
@@ -500,16 +497,16 @@
                         </div>
                         
                         <div class="flex flex-wrap gap-3">
-                            <button type="button" class="filter-btn px-5 py-2.5 bg-emerald-600 text-white rounded-2xl font-medium" data-status="all">
+                            <button class="filter-btn px-5 py-2.5 bg-emerald-600 text-white rounded-2xl font-medium" data-status="all">
                                 Todas
                             </button>
-                            <button type="button" class="filter-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300 transition-all" data-status="pending">
+                            <button class="filter-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300 transition-all" data-status="pending">
                                 Pendientes
                             </button>
-                            <button type="button" class="filter-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200 transition-all" data-status="in-progress">
+                            <button class="filter-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200 transition-all" data-status="in-progress">
                                 En Proceso
                             </button>
-                            <button type="button" class="filter-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200 transition-all" data-status="completed">
+                            <button class="filter-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200 transition-all" data-status="completed">
                                 Completadas
                             </button>
                         </div>
@@ -528,7 +525,7 @@
                     </div>
                     <h3 class="text-xl font-bold text-slate-700 mb-2">No hay órdenes registradas</h3>
                     <p class="text-slate-600 mb-6">Comience registrando una nueva recepción de vehículo.</p>
-                    <button id="go-to-reception" type="button" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300">
+                    <button id="go-to-reception" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg font-medium">
                         Ir a Recepción
                     </button>
                 </div>
@@ -601,19 +598,19 @@
                                         <div>
                                             <label class="block text-slate-700 mb-2">Nombre del taller</label>
                                             <input type="text" id="workshop-name" value="BELMOTOS" 
-                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent transition-all">
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
                                         </div>
                                         
                                         <div>
                                             <label class="block text-slate-700 mb-2">Dirección</label>
                                             <input type="text" id="workshop-address" 
-                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent transition-all">
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
                                         </div>
                                         
                                         <div>
                                             <label class="block text-slate-700 mb-2">Teléfono</label>
                                             <input type="text" id="workshop-phone" 
-                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent transition-all">
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
                                         </div>
                                     </div>
                                 </div>
@@ -621,10 +618,10 @@
                                 <div class="pt-6 border-t border-slate-200">
                                     <h4 class="font-medium text-slate-800 mb-4">Gestión de datos</h4>
                                     <div class="flex flex-col sm:flex-row gap-4">
-                                        <button id="export-data" type="button" class="px-5 py-3 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 transition-all duration-300 font-medium">
+                                        <button id="export-data" class="px-5 py-3 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 transition-all duration-300 font-medium">
                                             Exportar datos
                                         </button>
-                                        <button id="clear-data" type="button" class="px-5 py-3 border-2 border-red-300 text-red-600 rounded-2xl hover:bg-red-50 transition-all duration-300 font-medium">
+                                        <button id="clear-data" class="px-5 py-3 border-2 border-red-300 text-red-600 rounded-2xl hover:bg-red-50 transition-all duration-300 font-medium">
                                             Limpiar todos los datos
                                         </button>
                                     </div>
@@ -647,20 +644,20 @@
                         <h3 class="text-2xl font-bold text-slate-800">Orden #<span id="modal-order-id"></span></h3>
                         <p class="text-slate-600">Placa: <span id="modal-order-plate"></span> | Cliente: <span id="modal-order-client"></span></p>
                     </div>
-                    <button id="close-edit-modal" type="button" class="w-10 h-10 rounded-2xl hover:bg-slate-100 flex items-center justify-center transition-all">
+                    <button id="close-edit-modal" class="w-10 h-10 rounded-2xl hover:bg-slate-100 flex items-center justify-center transition-all">
                         <i data-lucide="x" class="w-6 h-6"></i>
                     </button>
                 </div>
                 
                 <!-- Pestañas del modal -->
                 <div class="mt-6 flex border-b border-slate-200">
-                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="info" type="button">
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="info">
                         Información General
                     </button>
-                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="progress" type="button">
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="progress">
                         Avances y Reparaciones
                     </button>
-                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="management" type="button">
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="management">
                         Gestión y Costos
                     </button>
                 </div>
@@ -679,7 +676,7 @@
                         <div>
                             <h4 class="text-lg font-bold text-slate-800 mb-4">Notas Técnicas</h4>
                             <textarea id="technical-notes" rows="4" 
-                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea"
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
                                       placeholder="Registre aquí las observaciones técnicas, diagnósticos y reparaciones realizadas..."></textarea>
                         </div>
                         
@@ -689,17 +686,17 @@
                                 <div>
                                     <label class="block text-slate-700 mb-2">Horas estimadas</label>
                                     <input type="number" id="estimated-hours" min="0" step="0.5" 
-                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent transition-all">
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
                                 </div>
                                 <div>
                                     <label class="block text-slate-700 mb-2">Horas reales</label>
                                     <input type="number" id="actual-hours" min="0" step="0.5" 
-                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus-ring-emerald-500 focus-border-transparent transition-all">
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
                                 </div>
                                 <div>
                                     <label class="block text-slate-700 mb-2">Técnico asignado</label>
                                     <input type="text" id="assigned-technician" 
-                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus-border-transparent transition-all uppercase-input">
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
                                 </div>
                             </div>
                         </div>
@@ -708,7 +705,7 @@
                             <h4 class="text-lg font-bold text-slate-800 mb-4">Evidencia de Reparación</h4>
                             <div class="bg-slate-50 rounded-2xl p-6">
                                 <div class="file-input-wrapper">
-                                    <button type="button" id="add-repair-photo" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover-border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center">
+                                    <button type="button" id="add-repair-photo" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
                                         <i data-lucide="camera" class="w-12 h-12 mb-4"></i>
                                         <span>Agregar fotos de la reparación</span>
                                         <span class="text-sm mt-2">Máx. 5 fotos</span>
@@ -734,7 +731,7 @@
                                     <div id="parts-costs" class="space-y-4">
                                         <!-- Los costos de partes se agregarán dinámicamente -->
                                     </div>
-                                    <button id="add-part-cost" type="button" class="mt-4 px-4 py-2 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover-bg-emerald-50 transition-all duration-300 font-medium">
+                                    <button id="add-part-cost" class="mt-4 px-4 py-2 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 transition-all duration-300 font-medium flex items-center">
                                         <i data-lucide="plus" class="mr-2"></i>
                                         Agregar parte
                                     </button>
@@ -754,7 +751,7 @@
                                         <div class="flex justify-between">
                                             <span class="text-slate-700">Otros gastos</span>
                                             <input type="number" id="other-costs" min="0" step="0.01" value="0" 
-                                                   class="w-32 p-2 border border-slate-300 rounded-xl text-right focus-outline-none focus-ring-emerald-500">
+                                                   class="w-32 p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500">
                                         </div>
                                         <div class="pt-3 border-t border-slate-300 flex justify-between">
                                             <span class="text-slate-800 font-bold">Total</span>
@@ -768,13 +765,13 @@
                         <div>
                             <h4 class="text-lg font-bold text-slate-800 mb-4">Estado de la Orden</h4>
                             <div class="flex flex-wrap gap-4">
-                                <button type="button" class="status-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover-bg-slate-300 transition-all" data-status="pending">
+                                <button class="status-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300 transition-all" data-status="pending">
                                     Pendiente
                                 </button>
-                                <button type="button" class="status-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover-bg-amber-200 transition-all" data-status="in-progress">
+                                <button class="status-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200 transition-all" data-status="in-progress">
                                     En Proceso
                                 </button>
-                                <button type="button" class="status-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover-bg-emerald-200 transition-all" data-status="completed">
+                                <button class="status-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200 transition-all" data-status="completed">
                                     Completada
                                 </button>
                             </div>
@@ -782,12 +779,12 @@
                         
                         <div class="pt-6 border-t border-slate-200">
                             <div class="flex justify-between items-center">
-                                <button id="generate-technical-report" type="button" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover-from-emerald-700 hover-to-emerald-800 transition-all">
+                                <button id="generate-technical-report" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg font-medium flex items-center">
                                     <i data-lucide="file-text" class="mr-2"></i>
                                     Generar Informe Técnico (PDF)
                                 </button>
                                 
-                                <button id="save-order-changes" type="button" class="px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl hover-from-slate-900 hover-to-slate-950 transition-all">
+                                <button id="save-order-changes" class="px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl hover:from-slate-900 hover:to-slate-950 transition-all duration-300 shadow-lg font-medium flex items-center">
                                     <i data-lucide="save" class="mr-2"></i>
                                     Guardar Cambios
                                 </button>
@@ -798,7 +795,7 @@
             </div>
         </div>
     </div>
-
+    
     <script>
         // Inicializar Lucide icons
         lucide.createIcons();
@@ -860,13 +857,7 @@
                 element.addEventListener('paste', function(e) {
                     e.preventDefault();
                     const pastedText = e.clipboardData.getData('text').toUpperCase();
-                    // Fallback moderno para insertar texto
-                    if (typeof navigator.clipboard !== 'undefined') {
-                        document.execCommand('insertText', false, pastedText);
-                    } else {
-                        // Insertar en posición actual (simple)
-                        this.value = (this.value.slice(0, this.selectionStart) + pastedText + this.value.slice(this.selectionEnd)).toUpperCase();
-                    }
+                    document.execCommand('insertText', false, pastedText);
                 });
             });
         }
@@ -901,7 +892,7 @@
             notification.innerHTML = `
                 <i data-lucide="${icons[type]}" class="mr-3 flex-shrink-0"></i>
                 <div class="flex-1">${message}</div>
-                <button class="ml-3 text-slate-500 hover:text-slate-700" type="button">
+                <button class="ml-3 text-slate-500 hover:text-slate-700">
                     <i data-lucide="x" class="w-4 h-4"></i>
                 </button>
             `;
@@ -936,8 +927,7 @@
             });
             
             // Mostrar la vista seleccionada
-            const target = document.getElementById(`${viewId}-view`);
-            if (target) target.classList.remove('hidden');
+            document.getElementById(`${viewId}-view`).classList.remove('hidden');
             
             // Actualizar navegación activa
             document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
@@ -949,8 +939,7 @@
             });
             
             // Cerrar menú móvil si está abierto
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) mobileMenu.classList.add('hidden');
+            document.getElementById('mobile-menu').classList.add('hidden');
             
             // Actualizar contenido según la vista
             if (viewId === 'orders') {
@@ -962,64 +951,1531 @@
         
         // Renderizar checklist en el formulario de recepción
         function renderChecklist() {
-            const checklistRoot = document.getElementById('checklist-root');
-            if (!checklistRoot) return;
-            checklistRoot.innerHTML = '';
+            const container = document.querySelector('#reception-form .grid.gap-3');
+            container.innerHTML = '';
             
+            // Función para alternar el estado del checkbox
+            function toggleChecklist(checkbox) {
+                checkbox.checked = !checkbox.checked;
+                // Disparar evento para actualizar UI
+                checkbox.dispatchEvent(new Event('change'));
+            }
+            
+            // Renderizar todos los items del checklist
             checklistItems.forEach(categoryData => {
+                // Agregar encabezado de categoría
                 const categoryHeader = document.createElement('div');
-                categoryHeader.className = 'col-span-full mb-3 mt-4';
+                categoryHeader.className = 'col-span-full mb-3 mt-4 first:mt-0';
                 categoryHeader.innerHTML = `
                     <h4 class="font-bold text-emerald-800 text-sm uppercase tracking-wider">${categoryData.category}</h4>
                     <div class="h-px w-full bg-gradient-to-r from-emerald-400 to-transparent mt-1"></div>
                 `;
-                checklistRoot.appendChild(categoryHeader);
+                container.appendChild(categoryHeader);
                 
+                // Agregar items de esta categoría
                 categoryData.items.forEach(item => {
-                    const itemId = `check-${item.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9\-]/g,'').toLowerCase()}`;
+                    const itemId = `check-${item.replace(/\s+/g, '-').toLowerCase()}`;
+                    
                     const itemElement = document.createElement('div');
                     itemElement.className = 'checklist-item';
                     itemElement.innerHTML = `
-                        <label for="${itemId}" class="checklist-label block p-3 bg-gray-50 rounded-xl border border-gray-200 hover:bg-emerald-50 hover:border-emerald-100 transition-all duration-200 cursor-pointer">
+                        <label for="${itemId}" 
+                               class="checklist-label block p-3 bg-gray-50 rounded-xl border border-gray-200 hover:bg-emerald-50 hover:border-emerald-100 transition-all duration-200 cursor-pointer group">
                             <div class="flex items-start">
-                                <input type="checkbox" id="${itemId}" class="checklist-checkbox mt-1 mr-3 w-4 h-4 accent-emerald-600 cursor-pointer">
-                                <span class="text-xs font-bold uppercase text-gray-700 tracking-tight leading-tight">
+                                <input type="checkbox" 
+                                       id="${itemId}" 
+                                       class="checklist-checkbox mt-1 mr-3 w-4 h-4 accent-emerald-600 cursor-pointer">
+                                <span class="text-xs font-bold uppercase text-gray-700 group-hover:text-emerald-800 tracking-tight leading-tight">
                                     ${item}
                                 </span>
                             </div>
                         </label>
                     `;
-                    checklistRoot.appendChild(itemElement);
+                    
+                    container.appendChild(itemElement);
+                    
+                    // Agregar evento de clic a toda la card
+                    const label = itemElement.querySelector('.checklist-label');
+                    const checkbox = itemElement.querySelector('.checklist-checkbox');
+                    
+                    label.addEventListener('click', function(e) {
+                        // Prevenir doble activación si se hace clic directamente en el checkbox
+                        if (e.target !== checkbox) {
+                            toggleChecklist(checkbox);
+                        }
+                    });
+                    
+                    // Cambiar estilo cuando el checkbox cambia
+                    checkbox.addEventListener('change', function() {
+                        const label = this.closest('.checklist-label');
+                        if (this.checked) {
+                            label.classList.add('bg-emerald-100', 'border-emerald-300');
+                            label.classList.remove('bg-gray-50', 'border-gray-200', 'hover:bg-emerald-50', 'hover:border-emerald-100');
+                        } else {
+                            label.classList.remove('bg-emerald-100', 'border-emerald-300');
+                            label.classList.add('bg-gray-50', 'border-gray-200', 'hover:bg-emerald-50', 'hover:border-emerald-100');
+                        }
+                    });
                 });
             });
         }
         
-        // Inicial setup
-        document.addEventListener('DOMContentLoaded', () => {
-            setupUppercaseInputs();
-            renderChecklist();
+        // Guardar nueva orden de recepción
+        function saveReceptionOrder(formData) {
+            const orderId = generateOrderId();
+            const now = new Date();
             
-            // mobile menu toggle
-            const mobileBtn = document.getElementById('mobile-menu-btn');
-            const mobileMenu = document.getElementById('mobile-menu');
-            const closeMobile = document.getElementById('close-mobile-menu');
-            if (mobileBtn && mobileMenu) {
-                mobileBtn.addEventListener('click', () => {
-                    mobileMenu.classList.toggle('hidden');
-                });
-            }
-            if (closeMobile && mobileMenu) {
-                closeMobile.addEventListener('click', () => mobileMenu.classList.add('hidden'));
-            }
-            
-            // navigation links
-            document.querySelectorAll('[data-view]').forEach(link => {
-                link.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const view = link.getAttribute('data-view');
-                    switchView(view);
+            // Obtener los checklists marcados
+            const checklistStatus = {};
+            checklistItems.forEach(categoryData => {
+                categoryData.items.forEach(item => {
+                    const checkboxId = `check-${item.replace(/\s+/g, '-').toLowerCase()}`;
+                    const checkbox = document.getElementById(checkboxId);
+                    if (checkbox) {
+                        checklistStatus[item] = checkbox.checked;
+                    }
                 });
             });
+            
+            const newOrder = {
+                id: orderId,
+                date: now.toISOString(),
+                owner: {
+                    name: document.getElementById('owner-name').value || 'NO ESPECIFICADO',
+                    id: document.getElementById('owner-id').value || 'NO ESPECIFICADO',
+                    phone: document.getElementById('owner-phone').value || 'NO ESPECIFICADO',
+                    email: document.getElementById('owner-email').value || 'NO ESPECIFICADO'
+                },
+                motorcycle: {
+                    plate: document.getElementById('motorcycle-plate').value || 'NO ESPECIFICADO',
+                    model: document.getElementById('motorcycle-model').value || 'NO ESPECIFICADO',
+                    km: document.getElementById('motorcycle-km').value || 'NO ESPECIFICADO',
+                    year: document.getElementById('motorcycle-year').value || 'NO ESPECIFICADO',
+                    chassis: document.getElementById('motorcycle-chassis').value || 'NO ESPECIFICADO',
+                    engine: document.getElementById('motorcycle-engine').value || 'NO ESPECIFICADO'
+                },
+                checklist: checklistStatus,
+                clientReport: document.getElementById('client-report').value || "EL CLIENTE NO ESPECIFICÓ PROBLEMAS.",
+                technicalObservations: document.getElementById('technical-observations').value || "SIN OBSERVACIONES TÉCNICAS INICIALES.",
+                photos: {
+                    general: document.getElementById('general-photo-img')?.src || '',
+                    chassis: document.getElementById('chassis-photo-img')?.src || ''
+                },
+                status: 'pending',
+                progress: {
+                    notes: '',
+                    estimatedHours: 0,
+                    actualHours: 0,
+                    technician: '',
+                    repairPhotos: []
+                },
+                costs: {
+                    labor: 0,
+                    parts: [],
+                    other: 0,
+                    total: 0
+                },
+                termsAccepted: true
+            };
+            
+            // Validar campos requeridos
+            const requiredFields = [
+                { id: 'owner-name', label: 'Nombre del propietario' },
+                { id: 'owner-id', label: 'Identificación del propietario' },
+                { id: 'owner-phone', label: 'Teléfono del propietario' },
+                { id: 'motorcycle-plate', label: 'Placa de la moto' },
+                { id: 'motorcycle-model', label: 'Modelo de la moto' },
+                { id: 'motorcycle-year', label: 'Año de la moto' },
+                { id: 'client-report', label: 'Reporte del cliente' }
+            ];
+            
+            const missingFields = [];
+            requiredFields.forEach(field => {
+                const element = document.getElementById(field.id);
+                if (!element.value.trim()) {
+                    missingFields.push(field.label);
+                }
+            });
+            
+            if (missingFields.length > 0) {
+                showNotification(`Complete los siguientes campos requeridos: ${missingFields.join(', ')}`, 'error');
+                return;
+            }
+            
+            if (!document.getElementById('accept-terms').checked) {
+                showNotification('Debe aceptar los términos del servicio para continuar.', 'error');
+                return;
+            }
+            
+            // Guardar en localStorage
+            orders.unshift(newOrder);
+            localStorage.setItem('belmotos-orders', JSON.stringify(orders));
+            
+            // Mostrar notificación
+            showNotification(`Orden #${orderId} creada exitosamente. Se ha generado el PDF de recepción.`, 'success');
+            
+            // Generar PDF de recepción
+            generateReceptionPDF(newOrder);
+            
+            // Limpiar formulario
+            document.getElementById('reception-form').reset();
+            document.getElementById('general-photo-preview').classList.add('hidden');
+            document.getElementById('chassis-photo-preview').classList.add('hidden');
+            document.getElementById('client-report').value = '';
+            document.getElementById('technical-observations').value = '';
+            
+            // Resetear checkboxes
+            document.querySelectorAll('.checklist-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+                const label = checkbox.closest('.checklist-label');
+                if (label) {
+                    label.classList.remove('bg-emerald-100', 'border-emerald-300');
+                    label.classList.add('bg-gray-50', 'border-gray-200', 'hover:bg-emerald-50', 'hover:border-emerald-100');
+                }
+            });
+            
+            // Reconfigurar inputs en mayúsculas
+            setupUppercaseInputs();
+            
+            // Cambiar a vista de órdenes
+            switchView('orders');
+        }
+        
+        // Renderizar lista de órdenes
+        function renderOrdersList(filter = 'all', searchTerm = '') {
+            const container = document.getElementById('orders-list');
+            const emptyMessage = document.getElementById('empty-orders-message');
+            
+            let filteredOrders = orders;
+            
+            // Aplicar filtro de estado
+            if (filter !== 'all') {
+                filteredOrders = orders.filter(order => order.status === filter);
+            }
+            
+            // Aplicar búsqueda
+            if (searchTerm) {
+                const term = searchTerm.toUpperCase();
+                filteredOrders = filteredOrders.filter(order => 
+                    order.motorcycle.plate.toUpperCase().includes(term) ||
+                    order.id.includes(term) ||
+                    order.owner.name.toUpperCase().includes(term) ||
+                    order.owner.id.toUpperCase().includes(term)
+                );
+            }
+            
+            if (filteredOrders.length === 0) {
+                container.innerHTML = '';
+                emptyMessage.classList.remove('hidden');
+                return;
+            }
+            
+            emptyMessage.classList.add('hidden');
+            
+            // Mapear estados a colores y textos
+            const statusConfig = {
+                pending: { bg: 'bg-slate-200', text: 'text-slate-800', label: 'Pendiente' },
+                'in-progress': { bg: 'bg-amber-100', text: 'text-amber-800', label: 'En Proceso' },
+                completed: { bg: 'bg-emerald-100', text: 'text-emerald-800', label: 'Completada' }
+            };
+            
+            container.innerHTML = filteredOrders.map(order => {
+                const status = statusConfig[order.status];
+                const date = new Date(order.date);
+                const formattedDate = date.toLocaleDateString('es-ES', { 
+                    day: '2-digit', 
+                    month: 'short', 
+                    year: 'numeric' 
+                });
+                
+                return `
+                    <div class="bg-white rounded-3xl shadow-lg overflow-hidden hover:shadow-xl transition-all duration-300">
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <span class="px-4 py-1.5 ${status.bg} ${status.text} rounded-2xl text-sm font-medium">${status.label}</span>
+                                    <h3 class="text-xl font-bold text-slate-800 mt-2">Orden #${order.id}</h3>
+                                </div>
+                                <button class="edit-order-btn w-10 h-10 rounded-2xl hover:bg-slate-100 flex items-center justify-center transition-all" data-order-id="${order.id}">
+                                    <i data-lucide="edit-2" class="w-5 h-5"></i>
+                                </button>
+                            </div>
+                            
+                            <div class="space-y-3 mb-6">
+                                <div class="flex items-center">
+                                    <i data-lucide="user" class="w-4 h-4 text-slate-400 mr-3"></i>
+                                    <span class="text-slate-700">${order.owner.name}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i data-lucide="bike" class="w-4 h-4 text-slate-400 mr-3"></i>
+                                    <span class="text-slate-700">${order.motorcycle.plate} - ${order.motorcycle.model}</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i data-lucide="calendar" class="w-4 h-4 text-slate-400 mr-3"></i>
+                                    <span class="text-slate-700">${formattedDate}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-slate-200">
+                                <div class="flex justify-between items-center">
+                                    <button class="view-details-btn px-4 py-2 text-emerald-700 hover:bg-emerald-50 rounded-2xl font-medium transition-all" data-order-id="${order.id}">
+                                        Ver detalles
+                                    </button>
+                                    ${order.status === 'completed' ? `
+                                        <button class="generate-report-btn px-4 py-2 bg-emerald-600 text-white hover:bg-emerald-700 rounded-2xl font-medium transition-all flex items-center" data-order-id="${order.id}">
+                                            <i data-lucide="file-text" class="w-4 h-4 mr-2"></i>
+                                            Informe
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            // Agregar eventos a los botones
+            container.querySelectorAll('.edit-order-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+                    openEditModal(orderId);
+                });
+            });
+            
+            container.querySelectorAll('.view-details-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+                    openEditModal(orderId);
+                });
+            });
+            
+            container.querySelectorAll('.generate-report-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+                    generateTechnicalReport(orderId);
+                });
+            });
+            
+            lucide.createIcons();
+        }
+        
+        // Renderizar lista de informes
+        function renderReportsList() {
+            const container = document.getElementById('reports-list');
+            const completedOrders = orders.filter(order => order.status === 'completed');
+            
+            if (completedOrders.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8">
+                        <div class="w-16 h-16 rounded-2xl bg-slate-100 flex items-center justify-center mx-auto mb-4">
+                            <i data-lucide="file-x" class="w-8 h-8 text-slate-400"></i>
+                        </div>
+                        <p class="text-slate-600">No hay órdenes completadas para generar informes.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = completedOrders.map(order => {
+                const date = new Date(order.date);
+                const formattedDate = date.toLocaleDateString('es-ES', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric' 
+                });
+                
+                return `
+                    <div class="bg-slate-50 rounded-2xl p-5 flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-slate-800">Orden #${order.id}</h4>
+                            <p class="text-slate-600 text-sm mt-1">${order.motorcycle.plate} - ${order.motorcycle.model}</p>
+                            <p class="text-slate-500 text-sm">${formattedDate}</p>
+                        </div>
+                        <button class="generate-report-btn px-5 py-2.5 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg font-medium flex items-center" data-order-id="${order.id}">
+                            <i data-lucide="download" class="mr-2"></i>
+                            Generar PDF
+                        </button>
+                    </div>
+                `;
+            }).join('');
+            
+            // Agregar eventos a los botones
+            container.querySelectorAll('.generate-report-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const orderId = this.getAttribute('data-order-id');
+                    generateTechnicalReport(orderId);
+                });
+            });
+            
+            lucide.createIcons();
+        }
+        
+        // Abrir modal de edición
+        function openEditModal(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            currentEditOrderId = orderId;
+            
+            // Actualizar información del modal
+            document.getElementById('modal-order-id').textContent = order.id;
+            document.getElementById('modal-order-plate').textContent = order.motorcycle.plate;
+            document.getElementById('modal-order-client').textContent = order.owner.name;
+            
+            // Cargar datos en las pestañas
+            loadOrderInfoTab(order);
+            loadOrderProgressTab(order);
+            loadOrderManagementTab(order);
+            
+            // Mostrar modal
+            document.getElementById('edit-order-modal').classList.remove('hidden');
+            
+            // Establecer pestaña activa
+            switchModalTab('info');
+            
+            // Configurar inputs en mayúsculas dentro del modal
+            setupUppercaseInputs();
+        }
+        
+        // Cargar información general en el modal
+        function loadOrderInfoTab(order) {
+            const container = document.getElementById('tab-info');
+            const date = new Date(order.date);
+            const formattedDate = date.toLocaleDateString('es-ES', { 
+                weekday: 'long',
+                day: 'numeric', 
+                month: 'long', 
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            
+            // Contar checklists completados
+            const totalItems = Object.keys(order.checklist || {}).length;
+            const completedItems = totalItems > 0 ? Object.values(order.checklist).filter(val => val).length : 0;
+            
+            container.innerHTML = `
+                <div class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-slate-50 rounded-2xl p-6">
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Información del Cliente</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-slate-500">Nombre completo</p>
+                                    <p class="font-medium text-slate-800">${order.owner.name || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Identificación</p>
+                                    <p class="font-medium text-slate-800">${order.owner.id || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Teléfono</p>
+                                    <p class="font-medium text-slate-800">${order.owner.phone || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Correo electrónico</p>
+                                    <p class="font-medium text-slate-800">${order.owner.email || 'NO ESPECIFICADO'}</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-6">
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Información de la Moto</h4>
+                            <div class="space-y-3">
+                                <div>
+                                    <p class="text-sm text-slate-500">Placa</p>
+                                    <p class="font-medium text-slate-800">${order.motorcycle.plate || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Modelo</p>
+                                    <p class="font-medium text-slate-800">${order.motorcycle.model || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <p class="text-sm text-slate-500">Año</p>
+                                        <p class="font-medium text-slate-800">${order.motorcycle.year || 'NO ESPECIFICADO'}</p>
+                                    </div>
+                                    <div>
+                                        <p class="text-sm text-slate-500">Kilometraje</p>
+                                        <p class="font-medium text-slate-800">${order.motorcycle.km ? order.motorcycle.km + ' KM' : 'NO ESPECIFICADO'}</p>
+                                    </div>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Serial del Chasis</p>
+                                    <p class="font-medium text-slate-800">${order.motorcycle.chassis || 'NO ESPECIFICADO'}</p>
+                                </div>
+                                <div>
+                                    <p class="text-sm text-slate-500">Serial del Motor</p>
+                                    <p class="font-medium text-slate-800">${order.motorcycle.engine || 'NO ESPECIFICADO'}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4">Checklist de Inspección</h4>
+                        <div class="mb-4">
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="text-slate-700">Progreso de inspección</span>
+                                <span class="font-medium text-emerald-700">${completedItems}/${totalItems}</span>
+                            </div>
+                            <div class="w-full bg-slate-200 rounded-full h-3">
+                                <div class="bg-emerald-600 h-3 rounded-full" style="width: ${totalItems > 0 ? (completedItems/totalItems)*100 : 0}%"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            ${order.checklist && Object.entries(order.checklist).map(([item, checked]) => `
+                                <div class="flex items-center">
+                                    <div class="w-5 h-5 rounded-lg ${checked ? 'bg-emerald-100 border border-emerald-300' : 'bg-slate-100 border border-slate-300'} flex items-center justify-center mr-3 flex-shrink-0">
+                                        ${checked ? '<i data-lucide="check" class="w-3 h-3 text-emerald-700"></i>' : ''}
+                                    </div>
+                                    <span class="text-slate-700 ${checked ? '' : 'opacity-70'}">${item}</span>
+                                </div>
+                            `).join('') || '<p class="text-slate-500">No hay checklist registrado</p>'}
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4">Detalles de la Orden</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div>
+                                <p class="text-sm text-slate-500">Fecha de recepción</p>
+                                <p class="font-medium text-slate-800">${formattedDate}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">ID de orden</p>
+                                <p class="font-medium text-slate-800">${order.id}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Estado actual</p>
+                                <p class="font-medium">
+                                    <span class="px-3 py-1 rounded-2xl ${order.status === 'pending' ? 'bg-slate-200 text-slate-800' : order.status === 'in-progress' ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}">
+                                        ${order.status === 'pending' ? 'Pendiente' : order.status === 'in-progress' ? 'En Proceso' : 'Completada'}
+                                    </span>
+                                </p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500">Aceptó términos</p>
+                                <p class="font-medium text-slate-800">${order.termsAccepted ? 'Sí' : 'No'}</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-slate-50 rounded-2xl p-6">
+                        <h4 class="text-lg font-bold text-slate-800 mb-4">Reportes y Observaciones</h4>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="text-sm text-slate-500 font-medium">Reporte del Cliente</p>
+                                <p class="text-slate-700 mt-1">${order.clientReport || 'SIN REPORTE DEL CLIENTE'}</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-slate-500 font-medium">Observaciones Técnicas Iniciales</p>
+                                <p class="text-slate-700 mt-1">${order.technicalObservations || 'SIN OBSERVACIONES TÉCNICAS'}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            lucide.createIcons();
+        }
+        
+        // Cargar progreso en el modal
+        function loadOrderProgressTab(order) {
+            document.getElementById('technical-notes').value = order.progress.notes || '';
+            document.getElementById('estimated-hours').value = order.progress.estimatedHours || '';
+            document.getElementById('actual-hours').value = order.progress.actualHours || '';
+            document.getElementById('assigned-technician').value = order.progress.technician || '';
+            
+            // Renderizar fotos de reparación
+            const container = document.getElementById('repair-photos-preview');
+            container.innerHTML = '';
+            
+            if (order.progress.repairPhotos && order.progress.repairPhotos.length > 0) {
+                order.progress.repairPhotos.forEach((photo, index) => {
+                    const photoElement = document.createElement('div');
+                    photoElement.className = 'relative';
+                    photoElement.innerHTML = `
+                        <div class="rounded-xl overflow-hidden h-32 bg-slate-200">
+                            <img src="${photo}" alt="Reparación ${index + 1}" class="w-full h-full object-cover">
+                        </div>
+                        <button class="remove-photo-btn absolute top-2 right-2 w-8 h-8 bg-red-500 text-white rounded-full flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity" data-index="${index}">
+                            <i data-lucide="x" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    container.appendChild(photoElement);
+                });
+            }
+            
+            // Agregar eventos a los botones de eliminar foto
+            container.querySelectorAll('.remove-photo-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const index = parseInt(this.getAttribute('data-index'));
+                    removeRepairPhoto(index);
+                });
+            });
+            
+            lucide.createIcons();
+        }
+        
+        // Cargar gestión en el modal
+        function loadOrderManagementTab(order) {
+            // Cargar costos de partes
+            const partsContainer = document.getElementById('parts-costs');
+            partsContainer.innerHTML = '';
+            
+            if (order.costs.parts && order.costs.parts.length > 0) {
+                order.costs.parts.forEach((part, index) => {
+                    const partElement = document.createElement('div');
+                    partElement.className = 'flex items-center gap-3';
+                    partElement.innerHTML = `
+                        <div class="flex-1">
+                            <input type="text" value="${part.name}" 
+                                   class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" placeholder="Nombre de la parte">
+                        </div>
+                        <div class="w-32">
+                            <input type="number" value="${part.cost}" min="0" step="0.01" 
+                                   class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Costo">
+                        </div>
+                        <button class="remove-part-btn w-10 h-10 rounded-xl hover:bg-red-50 text-red-600 flex items-center justify-center" data-index="${index}">
+                            <i data-lucide="trash-2" class="w-4 h-4"></i>
+                        </button>
+                    `;
+                    partsContainer.appendChild(partElement);
+                });
+            }
+            
+            // Actualizar costos
+            document.getElementById('labor-cost').textContent = `$${order.costs.labor.toFixed(2)}`;
+            document.getElementById('other-costs').value = order.costs.other;
+            updateTotalCost();
+            
+            // Establecer estado activo
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                if (btn.getAttribute('data-status') === order.status) {
+                    btn.classList.add('bg-emerald-600', 'text-white');
+                    btn.classList.remove('bg-slate-200', 'text-slate-700', 'bg-amber-100', 'text-amber-800', 'bg-emerald-100', 'text-emerald-800');
+                } else {
+                    btn.classList.remove('bg-emerald-600', 'text-white');
+                }
+            });
+            
+            lucide.createIcons();
+        }
+        
+        // Cambiar pestaña en el modal
+        function switchModalTab(tabId) {
+            // Ocultar todas las pestañas
+            document.querySelectorAll('.modal-tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+            });
+            
+            // Mostrar la pestaña seleccionada
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+            
+            // Actualizar pestañas activas
+            document.querySelectorAll('.modal-tab').forEach(tab => {
+                tab.classList.remove('border-emerald-600', 'text-emerald-700');
+                if (tab.getAttribute('data-tab') === tabId) {
+                    tab.classList.add('border-emerald-600', 'text-emerald-700');
+                }
+            });
+        }
+        
+        // Actualizar costo total
+        function updateTotalCost() {
+            const order = orders.find(o => o.id === currentEditOrderId);
+            if (!order) return;
+            
+            // Calcular total de partes
+            let partsTotal = 0;
+            document.querySelectorAll('.part-cost').forEach(input => {
+                partsTotal += parseFloat(input.value) || 0;
+            });
+            
+            // Obtener otros costos
+            const otherCosts = parseFloat(document.getElementById('other-costs').value) || 0;
+            
+            // Calcular mano de obra (suponiendo $20 por hora)
+            const laborRate = 20;
+            const actualHours = parseFloat(document.getElementById('actual-hours').value) || 0;
+            const laborCost = actualHours * laborRate;
+            
+            // Calcular total
+            const totalCost = partsTotal + otherCosts + laborCost;
+            
+            // Actualizar UI
+            document.getElementById('parts-total').textContent = `$${partsTotal.toFixed(2)}`;
+            document.getElementById('labor-cost').textContent = `$${laborCost.toFixed(2)}`;
+            document.getElementById('total-cost').textContent = `$${totalCost.toFixed(2)}`;
+            
+            // Actualizar en el objeto order
+            order.costs.labor = laborCost;
+            order.costs.other = otherCosts;
+            order.costs.total = totalCost;
+            
+            // Actualizar partes
+            order.costs.parts = [];
+            document.querySelectorAll('.part-name').forEach((nameInput, index) => {
+                const costInput = document.querySelectorAll('.part-cost')[index];
+                order.costs.parts.push({
+                    name: nameInput.value,
+                    cost: parseFloat(costInput.value) || 0
+                });
+            });
+        }
+        
+        // Eliminar foto de reparación
+        function removeRepairPhoto(index) {
+            const order = orders.find(o => o.id === currentEditOrderId);
+            if (!order || !order.progress.repairPhotos) return;
+            
+            order.progress.repairPhotos.splice(index, 1);
+            loadOrderProgressTab(order);
+        }
+        
+        // Guardar cambios en la orden
+        function saveOrderChanges() {
+            const order = orders.find(o => o.id === currentEditOrderId);
+            if (!order) return;
+            
+            // Actualizar progreso
+            order.progress.notes = document.getElementById('technical-notes').value.toUpperCase();
+            order.progress.estimatedHours = parseFloat(document.getElementById('estimated-hours').value) || 0;
+            order.progress.actualHours = parseFloat(document.getElementById('actual-hours').value) || 0;
+            order.progress.technician = document.getElementById('assigned-technician').value.toUpperCase();
+            
+            // Actualizar estado
+            const activeStatusBtn = document.querySelector('.status-btn.bg-emerald-600');
+            if (activeStatusBtn) {
+                order.status = activeStatusBtn.getAttribute('data-status');
+            }
+            
+            // Guardar en localStorage
+            localStorage.setItem('belmotos-orders', JSON.stringify(orders));
+            
+            // Cerrar modal
+            document.getElementById('edit-order-modal').classList.add('hidden');
+            
+            // Mostrar notificación
+            showNotification(`Orden #${order.id} actualizada exitosamente.`, 'success');
+            
+            // Actualizar lista de órdenes
+            renderOrdersList();
+        }
+        
+        // Generar PDF de recepción con formato mejorado
+        function generateReceptionPDF(order) {
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Configuración de márgenes
+                const marginLeft = 15;
+                const marginRight = 15;
+                const pageWidth = 210;
+                const contentWidth = pageWidth - marginLeft - marginRight;
+                
+                // ----------------------
+                // ENCABEZADO CORPORATIVO
+                // ----------------------
+                doc.setFillColor(5, 150, 105);
+                doc.rect(0, 0, pageWidth, 30, 'F');
+                
+                // Texto principal
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(24);
+                doc.setTextColor(255, 255, 255);
+                doc.text("BELMOTOS - TALLER", marginLeft, 20);
+                
+                // Número de orden
+                doc.setFontSize(16);
+                const orderText = `ORDEN #${order.id}`;
+                const orderTextWidth = doc.getStringUnitWidth(orderText) * 16 / doc.internal.scaleFactor;
+                const orderX = pageWidth - marginRight - orderTextWidth;
+                doc.text(orderText, orderX, 20);
+                
+                // ----------------------
+                // INFORMACIÓN DE FECHA
+                // ----------------------
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                const date = new Date(order.date);
+                const formattedDate = date.toLocaleDateString('es-ES', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+                doc.text(`Fecha: ${formattedDate}`, marginLeft, 40);
+                
+                // ----------------------
+                // LAYOUT DE INFORMACIÓN - DOS COLUMNAS
+                // ----------------------
+                const columnWidth = contentWidth / 2 - 5;
+                let yPos = 50;
+                
+                // Columna Izquierda: DATOS DEL PROPIETARIO
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("DATOS DEL PROPIETARIO", marginLeft, yPos);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                yPos += 7;
+                doc.text(`Nombre: ${order.owner.name || 'NO ESPECIFICADO'}`, marginLeft, yPos);
+                yPos += 5;
+                doc.text(`C.I./RIF: ${order.owner.id || 'NO ESPECIFICADO'}`, marginLeft, yPos);
+                yPos += 5;
+                doc.text(`Teléfono: ${order.owner.phone || 'NO ESPECIFICADO'}`, marginLeft, yPos);
+                yPos += 5;
+                doc.text(`Email: ${order.owner.email || 'NO ESPECIFICADO'}`, marginLeft, yPos);
+                
+                // Columna Derecha: DATOS DE LA MOTO
+                yPos = 50;
+                const rightColumnX = marginLeft + columnWidth + 10;
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("DATOS DE LA MOTO", rightColumnX, yPos);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                yPos += 7;
+                doc.text(`Placa: ${order.motorcycle.plate || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                yPos += 5;
+                doc.text(`Modelo: ${order.motorcycle.model || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                yPos += 5;
+                doc.text(`KM: ${order.motorcycle.km || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                yPos += 5;
+                doc.text(`Año: ${order.motorcycle.year || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                yPos += 5;
+                doc.text(`Serial Chasis: ${order.motorcycle.chassis || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                yPos += 5;
+                doc.text(`Serial Motor: ${order.motorcycle.engine || 'NO ESPECIFICADO'}`, rightColumnX, yPos);
+                
+                // ----------------------
+                // REPORTE DEL CLIENTE
+                // ----------------------
+                yPos += 10;
+                
+                if (yPos > 150) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("REPORTE DEL CLIENTE", marginLeft, yPos);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                yPos += 7;
+                
+                const clientReport = order.clientReport || "EL CLIENTE NO ESPECIFICÓ PROBLEMAS.";
+                const splitClientReport = doc.splitTextToSize(clientReport, contentWidth);
+                splitClientReport.forEach((line, index) => {
+                    doc.text(line, marginLeft, yPos + (index * 4));
+                });
+                
+                yPos += (splitClientReport.length * 4) + 10;
+                
+                // ----------------------
+                // OBSERVACIONES TÉCNICAS
+                // ----------------------
+                if (yPos > 150) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("OBSERVACIONES TÉCNICAS", marginLeft, yPos);
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                yPos += 7;
+                
+                const observations = order.technicalObservations || "SIN OBSERVACIONES TÉCNICAS INICIALES.";
+                const splitObservations = doc.splitTextToSize(observations, contentWidth);
+                splitObservations.forEach((line, index) => {
+                    doc.text(line, marginLeft, yPos + (index * 4));
+                });
+                
+                yPos += (splitObservations.length * 4) + 10;
+                
+                // ----------------------
+                // SECCIÓN DE INVENTARIO FÍSICO - 3 COLUMNAS
+                // ----------------------
+                if (yPos > 100) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                // Título de inventario
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(14);
+                doc.text("INVENTARIO FÍSICO", pageWidth / 2, yPos, { align: 'center' });
+                
+                yPos += 10;
+                
+                // Configuración de cuadrícula (3 columnas)
+                const gridCols = 3;
+                const gridColWidth = contentWidth / gridCols;
+                const colSpacing = 5;
+                
+                // Fuente pequeña para items
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(7);
+                
+                // Agrupar items por categoría
+                const categorizedItems = {};
+                if (order.checklist) {
+                    Object.entries(order.checklist).forEach(([item, checked]) => {
+                        // Encontrar categoría del item
+                        let category = 'GENERAL';
+                        checklistItems.forEach(cat => {
+                            if (cat.items.includes(item)) {
+                                category = cat.category;
+                            }
+                        });
+                        
+                        if (!categorizedItems[category]) {
+                            categorizedItems[category] = [];
+                        }
+                        categorizedItems[category].push({ item, checked });
+                    });
+                }
+                
+                // Renderizar items en 3 columnas
+                let currentCol = 0;
+                let currentY = yPos;
+                let maxY = yPos;
+                
+                Object.entries(categorizedItems).forEach(([category, items]) => {
+                    // Calcular posición de la columna actual
+                    const colX = marginLeft + (currentCol * (gridColWidth + colSpacing));
+                    
+                    // Verificar si necesitamos nueva columna o página
+                    if (currentY > 250 && currentCol < gridCols - 1) {
+                        currentCol++;
+                        currentY = yPos;
+                        maxY = Math.max(maxY, currentY);
+                    } else if (currentY > 250 && currentCol === gridCols - 1) {
+                        doc.addPage();
+                        currentCol = 0;
+                        currentY = 20;
+                        maxY = currentY;
+                    }
+                    
+                    // Encabezado de categoría
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(8);
+                    const currentColX = marginLeft + (currentCol * (gridColWidth + colSpacing));
+                    doc.text(category.toUpperCase(), currentColX, currentY);
+                    currentY += 4;
+                    
+                    // Items de la categoría
+                    doc.setFont("helvetica", "normal");
+                    doc.setFontSize(7);
+                    
+                    items.forEach(({ item, checked }) => {
+                        const marker = checked ? '[X]' : '[ ]';
+                        const itemText = `${marker} ${item}`;
+                        
+                        // Dividir texto si es muy largo
+                        const splitText = doc.splitTextToSize(itemText, gridColWidth - 5);
+                        
+                        // Verificar si cabe en la página actual
+                        if (currentY + (splitText.length * 3) > 280) {
+                            if (currentCol < gridCols - 1) {
+                                currentCol++;
+                                currentY = yPos;
+                                maxY = Math.max(maxY, currentY);
+                            } else {
+                                doc.addPage();
+                                currentCol = 0;
+                                currentY = 20;
+                                maxY = currentY;
+                            }
+                        }
+                        
+                        const currentColX = marginLeft + (currentCol * (gridColWidth + colSpacing));
+                        
+                        splitText.forEach((line, index) => {
+                            doc.text(line, currentColX, currentY + (index * 3));
+                        });
+                        
+                        currentY += (splitText.length * 3) + 1;
+                        maxY = Math.max(maxY, currentY);
+                    });
+                    
+                    currentY += 2; // Espacio entre categorías
+                });
+                
+                yPos = maxY + 10;
+                
+                // ----------------------
+                // EVIDENCIA FOTOGRÁFICA (si existe)
+                // ----------------------
+                if (order.photos && (order.photos.general || order.photos.chassis)) {
+                    if (yPos > 150) {
+                        doc.addPage();
+                        yPos = 20;
+                    }
+                    
+                    doc.setFont("helvetica", "bold");
+                    doc.setFontSize(10);
+                    doc.text("EVIDENCIA FOTOGRÁFICA:", marginLeft, yPos);
+                    
+                    yPos += 8;
+                    
+                    const photoWidth = 85;
+                    const photoHeight = 50;
+                    const photoSpacing = 10;
+                    
+                    // Foto general
+                    if (order.photos.general) {
+                        try {
+                            doc.addImage(order.photos.general, 'JPEG', marginLeft, yPos, photoWidth, photoHeight);
+                            doc.setFontSize(8);
+                            doc.text("FOTO GENERAL", marginLeft + photoWidth/2, yPos + photoHeight + 5, { align: 'center' });
+                        } catch (e) {
+                            console.error("Error cargando foto general:", e);
+                        }
+                    }
+                    
+                    // Foto del chasis
+                    if (order.photos.chassis) {
+                        try {
+                            const chassisX = marginLeft + photoWidth + photoSpacing;
+                            doc.addImage(order.photos.chassis, 'JPEG', chassisX, yPos, photoWidth, photoHeight);
+                            doc.text("SERIAL DEL CHASIS", chassisX + photoWidth/2, yPos + photoHeight + 5, { align: 'center' });
+                        } catch (e) {
+                            console.error("Error cargando foto del chasis:", e);
+                        }
+                    }
+                    
+                    yPos += photoHeight + 15;
+                }
+                
+                // ----------------------
+                // PIE DE PÁGINA LEGAL
+                // ----------------------
+                if (yPos > 200) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFont("helvetica", "italic");
+                doc.setFontSize(6);
+                
+                const legalText = `Cláusulas de responsabilidad: BELMOTOS no se hace responsable por objetos de valor dejados dentro del vehículo. 
+                El taller mantendrá el vehículo bajo custodia, pero no será responsable por daños por causas mayores o fuerza mayor. 
+                El cliente autoriza las reparaciones necesarias y acepta que el costo final puede variar según piezas requeridas. 
+                Para retirar el vehículo debe presentar documento de identificación y esta orden de servicio. 
+                El vehículo debe ser retirado dentro de los 15 días hábiles posteriores a la notificación de culminación.`;
+                
+                const splitLegalText = doc.splitTextToSize(legalText, contentWidth);
+                splitLegalText.forEach((line, index) => {
+                    doc.text(line, marginLeft, yPos + (index * 3));
+                });
+                
+                yPos += (splitLegalText.length * 3) + 10;
+                
+                // Líneas de firma
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                
+                // Firma del taller
+                doc.text("_________________________", marginLeft, yPos);
+                doc.text("RECIBIDO (TALLER)", marginLeft, yPos + 5);
+                
+                // Firma del cliente
+                const clientSignatureX = pageWidth - marginRight - 50;
+                doc.text("_________________________", clientSignatureX, yPos);
+                doc.text("CONFORMIDAD (CLIENTE)", clientSignatureX, yPos + 5);
+                
+                // ----------------------
+                // GUARDAR PDF
+                // ----------------------
+                doc.save(`BELMOTOS_Recepcion_${order.id}_${order.motorcycle.plate}.pdf`);
+                
+            } catch (error) {
+                console.error('Error generando PDF:', error);
+                showNotification('Error al generar el PDF de recepción.', 'error');
+            }
+        }
+        
+        // Generar informe técnico
+        function generateTechnicalReport(orderId) {
+            const order = orders.find(o => o.id === orderId);
+            if (!order) return;
+            
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Configuración de márgenes
+                const marginLeft = 15;
+                const marginRight = 15;
+                const pageWidth = 210;
+                const contentWidth = pageWidth - marginLeft - marginRight;
+                
+                // ----------------------
+                // ENCABEZADO CORPORATIVO
+                // ----------------------
+                doc.setFillColor(5, 150, 105);
+                doc.rect(0, 0, pageWidth, 30, 'F');
+                
+                // Texto principal
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(24);
+                doc.setTextColor(255, 255, 255);
+                doc.text("INFORME TÉCNICO", marginLeft, 20);
+                
+                // Número de orden
+                doc.setFontSize(16);
+                const orderText = `ORDEN #${order.id}`;
+                const orderTextWidth = doc.getStringUnitWidth(orderText) * 16 / doc.internal.scaleFactor;
+                const orderX = pageWidth - marginRight - orderTextWidth;
+                doc.text(orderText, orderX, 20);
+                
+                // ----------------------
+                // INFORMACIÓN BÁSICA
+                // ----------------------
+                doc.setFontSize(10);
+                doc.setTextColor(0, 0, 0);
+                
+                let yPos = 40;
+                
+                // Fecha
+                const date = new Date(order.date);
+                const formattedDate = date.toLocaleDateString('es-ES', { 
+                    day: '2-digit', 
+                    month: 'long', 
+                    year: 'numeric'
+                });
+                doc.text(`Fecha de recepción: ${formattedDate}`, marginLeft, yPos);
+                
+                // Placa y modelo
+                doc.text(`Moto: ${order.motorcycle.plate || 'NO ESPECIFICADO'} - ${order.motorcycle.model || 'NO ESPECIFICADO'}`, marginLeft + 80, yPos);
+                
+                yPos += 7;
+                
+                // Cliente
+                doc.text(`Cliente: ${order.owner.name || 'NO ESPECIFICADO'}`, marginLeft, yPos);
+                doc.text(`Teléfono: ${order.owner.phone || 'NO ESPECIFICADO'}`, marginLeft + 80, yPos);
+                
+                yPos += 10;
+                
+                // ----------------------
+                // DIAGNÓSTICO Y REPARACIONES
+                // ----------------------
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("DIAGNÓSTICO Y REPARACIONES REALIZADAS", marginLeft, yPos);
+                
+                yPos += 7;
+                
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                
+                const diagnosis = order.progress.notes || "SIN DIAGNÓSTICO ESPECÍFICO REGISTRADO.";
+                const splitDiagnosis = doc.splitTextToSize(diagnosis, contentWidth);
+                splitDiagnosis.forEach((line, index) => {
+                    doc.text(line, marginLeft, yPos + (index * 5));
+                });
+                
+                yPos += (splitDiagnosis.length * 5) + 10;
+                
+                // ----------------------
+                // DETALLE DE TRABAJO
+                // ----------------------
+                if (yPos > 180) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("DETALLE DEL TRABAJO", marginLeft, yPos);
+                
+                yPos += 7;
+                
+                // Técnico y horas
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(10);
+                
+                const technician = order.progress.technician || "NO ASIGNADO";
+                const estimatedHours = order.progress.estimatedHours || 0;
+                const actualHours = order.progress.actualHours || 0;
+                
+                doc.text(`Técnico responsable: ${technician}`, marginLeft, yPos);
+                yPos += 5;
+                doc.text(`Horas estimadas: ${estimatedHours}h`, marginLeft, yPos);
+                doc.text(`Horas reales: ${actualHours}h`, marginLeft + 70, yPos);
+                yPos += 10;
+                
+                // ----------------------
+                // COSTOS DETALLADOS
+                // ----------------------
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(12);
+                doc.text("DETALLE DE COSTOS", marginLeft, yPos);
+                
+                yPos += 7;
+                
+                // Encabezados de tabla
+                doc.setFillColor(240, 240, 240);
+                doc.rect(marginLeft, yPos, contentWidth, 8, 'F');
+                
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(9);
+                doc.text("DESCRIPCIÓN", marginLeft + 2, yPos + 5);
+                doc.text("COSTO", marginLeft + contentWidth - 20, yPos + 5, { align: 'right' });
+                
+                yPos += 10;
+                
+                // Mano de obra
+                doc.setFont("helvetica", "normal");
+                doc.setFontSize(9);
+                doc.text("Mano de obra", marginLeft + 2, yPos);
+                doc.text(`$${order.costs.labor.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
+                yPos += 6;
+                
+                // Partes y repuestos
+                if (order.costs.parts && order.costs.parts.length > 0) {
+                    order.costs.parts.forEach(part => {
+                        doc.text(part.name, marginLeft + 2, yPos);
+                        doc.text(`$${part.cost.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
+                        yPos += 6;
+                    });
+                }
+                
+                // Otros gastos
+                doc.text("Otros gastos", marginLeft + 2, yPos);
+                doc.text(`$${order.costs.other.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
+                yPos += 8;
+                
+                // Total
+                doc.setFont("helvetica", "bold");
+                doc.setFontSize(10);
+                doc.text("TOTAL", marginLeft + 2, yPos);
+                doc.text(`$${order.costs.total.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
+                
+                yPos += 15;
+                
+                // ----------------------
+                // FIRMAS
+                // ----------------------
+                if (yPos > 200) {
+                    doc.addPage();
+                    yPos = 20;
+                }
+                
+                // Firma del técnico
+                doc.text("_________________________", marginLeft, yPos);
+                doc.text("TÉCNICO RESPONSABLE", marginLeft, yPos + 5);
+                
+                // Firma del cliente
+                const clientSignatureX = pageWidth - marginRight - 50;
+                doc.text("_________________________", clientSignatureX, yPos);
+                doc.text("CONFORMIDAD DEL CLIENTE", clientSignatureX, yPos + 5);
+                
+                // Fecha de entrega
+                doc.setFontSize(8);
+                const deliveryDate = new Date().toLocaleDateString('es-ES');
+                doc.text(`Fecha de entrega: ${deliveryDate}`, pageWidth / 2, yPos + 15, { align: 'center' });
+                
+                // ----------------------
+                // GUARDAR PDF
+                // ----------------------
+                doc.save(`BELMOTOS_Informe_Tecnico_${order.id}_${order.motorcycle.plate}.pdf`);
+                
+                showNotification(`Informe técnico #${order.id} generado exitosamente.`, 'success');
+                
+            } catch (error) {
+                console.error('Error generando informe técnico:', error);
+                showNotification('Error al generar el informe técnico.', 'error');
+            }
+        }
+        
+        // Event Listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar inputs en mayúsculas
+            setupUppercaseInputs();
+            
+            // Renderizar checklist al cargar
+            renderChecklist();
+            
+            // Cargar órdenes desde localStorage
+            if (orders.length > 0) {
+                renderOrdersList();
+            } else {
+                document.getElementById('empty-orders-message').classList.remove('hidden');
+            }
+            
+            // Navegación
+            document.querySelectorAll('.nav-link, .mobile-nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const viewId = this.getAttribute('data-view');
+                    switchView(viewId);
+                });
+            });
+            
+            // Botón para ir a recepción desde órdenes vacías
+            document.getElementById('go-to-reception').addEventListener('click', function() {
+                switchView('reception');
+            });
+            
+            // Menú móvil
+            document.getElementById('mobile-menu-btn').addEventListener('click', function() {
+                document.getElementById('mobile-menu').classList.remove('hidden');
+            });
+            
+            document.getElementById('close-mobile-menu').addEventListener('click', function() {
+                document.getElementById('mobile-menu').classList.add('hidden');
+            });
+            
+            // Cerrar modal de edición
+            document.getElementById('close-edit-modal').addEventListener('click', function() {
+                document.getElementById('edit-order-modal').classList.add('hidden');
+            });
+            
+            // Cambiar pestañas en modal
+            document.querySelectorAll('.modal-tab').forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    switchModalTab(tabId);
+                });
+            });
+            
+            // Filtros de órdenes
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Actualizar botones activos
+                    document.querySelectorAll('.filter-btn').forEach(b => {
+                        b.classList.remove('bg-emerald-600', 'text-white');
+                        b.classList.add('bg-slate-200', 'text-slate-700', 'bg-amber-100', 'text-amber-800', 'bg-emerald-100', 'text-emerald-800');
+                    });
+                    
+                    this.classList.add('bg-emerald-600', 'text-white');
+                    this.classList.remove('bg-slate-200', 'text-slate-700', 'bg-amber-100', 'text-amber-800', 'bg-emerald-100', 'text-emerald-800');
+                    
+                    // Aplicar filtro
+                    const status = this.getAttribute('data-status');
+                    const searchTerm = document.getElementById('search-orders').value;
+                    renderOrdersList(status, searchTerm);
+                });
+            });
+            
+            // Búsqueda de órdenes
+            document.getElementById('search-orders').addEventListener('input', function() {
+                const activeFilter = document.querySelector('.filter-btn.bg-emerald-600');
+                const status = activeFilter ? activeFilter.getAttribute('data-status') : 'all';
+                renderOrdersList(status, this.value);
+            });
+            
+            // Subida de fotos en recepción
+            document.getElementById('general-photo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = document.getElementById('general-photo-img');
+                        img.src = event.target.result;
+                        document.getElementById('general-photo-preview').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            document.getElementById('chassis-photo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = document.getElementById('chassis-photo-img');
+                        img.src = event.target.result;
+                        document.getElementById('chassis-photo-preview').classList.remove('hidden');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+            
+            // Subida de fotos de reparación
+            document.getElementById('repair-photos').addEventListener('change', function(e) {
+                const files = e.target.files;
+                const order = orders.find(o => o.id === currentEditOrderId);
+                if (!order) return;
+                
+                if (!order.progress.repairPhotos) {
+                    order.progress.repairPhotos = [];
+                }
+                
+                for (let i = 0; i < Math.min(files.length, 5 - order.progress.repairPhotos.length); i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        order.progress.repairPhotos.push(event.target.result);
+                        loadOrderProgressTab(order);
+                    };
+                    reader.readAsDataURL(file);
+                }
+                
+                if (files.length > 5 - order.progress.repairPhotos.length) {
+                    showNotification('Solo se pueden agregar un máximo de 5 fotos de reparación.', 'warning');
+                }
+            });
+            
+            // Agregar costo de parte
+            document.getElementById('add-part-cost').addEventListener('click', function() {
+                const partsContainer = document.getElementById('parts-costs');
+                const partIndex = partsContainer.children.length;
+                
+                const partElement = document.createElement('div');
+                partElement.className = 'flex items-center gap-3';
+                partElement.innerHTML = `
+                    <div class="flex-1">
+                        <input type="text" 
+                               class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" placeholder="Nombre de la parte">
+                    </div>
+                    <div class="w-32">
+                        <input type="number" min="0" step="0.01" 
+                               class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Costo">
+                    </div>
+                    <button class="remove-part-btn w-10 h-10 rounded-xl hover:bg-red-50 text-red-600 flex items-center justify-center" data-index="${partIndex}">
+                        <i data-lucide="trash-2" class="w-4 h-4"></i>
+                    </button>
+                `;
+                partsContainer.appendChild(partElement);
+                
+                // Configurar input en mayúsculas
+                const nameInput = partElement.querySelector('.uppercase-input');
+                if (nameInput) {
+                    nameInput.addEventListener('input', function(e) {
+                        const cursorPosition = this.selectionStart;
+                        this.value = this.value.toUpperCase();
+                        this.setSelectionRange(cursorPosition, cursorPosition);
+                    });
+                }
+                
+                // Agregar evento al botón de eliminar
+                partElement.querySelector('.remove-part-btn').addEventListener('click', function() {
+                    partElement.remove();
+                    updateTotalCost();
+                });
+                
+                // Agregar eventos a los inputs para actualizar costos
+                partElement.querySelector('.part-cost').addEventListener('input', updateTotalCost);
+                partElement.querySelector('.part-name').addEventListener('input', updateTotalCost);
+                
+                lucide.createIcons();
+            });
+            
+            // Eliminar parte (evento delegado)
+            document.getElementById('parts-costs').addEventListener('click', function(e) {
+                if (e.target.closest('.remove-part-btn')) {
+                    const btn = e.target.closest('.remove-part-btn');
+                    const partElement = btn.closest('.flex.items-center');
+                    partElement.remove();
+                    updateTotalCost();
+                }
+            });
+            
+            // Actualizar costos cuando cambian los inputs
+            document.getElementById('actual-hours').addEventListener('input', updateTotalCost);
+            document.getElementById('other-costs').addEventListener('input', updateTotalCost);
+            
+            // Cambiar estado de orden
+            document.querySelectorAll('.status-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remover estado activo de todos los botones
+                    document.querySelectorAll('.status-btn').forEach(b => {
+                        b.classList.remove('bg-emerald-600', 'text-white');
+                        b.classList.add('bg-slate-200', 'text-slate-700', 'bg-amber-100', 'text-amber-800', 'bg-emerald-100', 'text-emerald-800');
+                    });
+                    
+                    // Aplicar estado activo al botón clickeado
+                    this.classList.add('bg-emerald-600', 'text-white');
+                    this.classList.remove('bg-slate-200', 'text-slate-700', 'bg-amber-100', 'text-amber-800', 'bg-emerald-100', 'text-emerald-800');
+                    
+                    updateTotalCost();
+                });
+            });
+            
+            // Guardar cambios en orden
+            document.getElementById('save-order-changes').addEventListener('click', saveOrderChanges);
+            
+            // Generar informe técnico desde modal
+            document.getElementById('generate-technical-report').addEventListener('click', function() {
+                if (currentEditOrderId) {
+                    generateTechnicalReport(currentEditOrderId);
+                }
+            });
+            
+            // Formulario de recepción
+            document.getElementById('reception-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveReceptionOrder(new FormData(this));
+            });
+            
+            // Configuración de toggles
+            document.querySelectorAll('input[type="checkbox"][id$="toggle"]').forEach(toggle => {
+                toggle.addEventListener('change', function() {
+                    const label = this.nextElementSibling;
+                    const dot = label.nextElementSibling;
+                    
+                    if (this.checked) {
+                        dot.style.transform = 'translateX(1.5rem)';
+                        label.style.backgroundColor = '#059669';
+                    } else {
+                        dot.style.transform = 'translateX(0)';
+                        label.style.backgroundColor = '#d1d5db';
+                    }
+                });
+            });
+            
+            // Limpiar todos los datos
+            document.getElementById('clear-data').addEventListener('click', function() {
+                if (confirm('¿Está seguro de que desea eliminar todos los datos? Esta acción no se puede deshacer.')) {
+                    localStorage.removeItem('belmotos-orders');
+                    orders = [];
+                    renderOrdersList();
+                    showNotification('Todos los datos han sido eliminados.', 'info');
+                }
+            });
+            
+            // Exportar datos
+            document.getElementById('export-data').addEventListener('click', function() {
+                const dataStr = JSON.stringify(orders, null, 2);
+                const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                
+                const exportFileDefaultName = `belmotos_datos_${new Date().toISOString().split('T')[0]}.json`;
+                
+                const linkElement = document.createElement('a');
+                linkElement.setAttribute('href', dataUri);
+                linkElement.setAttribute('download', exportFileDefaultName);
+                linkElement.click();
+                
+                showNotification('Datos exportados exitosamente.', 'success');
+            });
+            
+            // Inicializar toggles de configuración
+            document.querySelectorAll('input[type="checkbox"][id$="toggle"]').forEach(toggle => {
+                toggle.dispatchEvent(new Event('change'));
+            });
+        });
+        
+        // Cerrar modal haciendo clic fuera de él
+        document.getElementById('edit-order-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                this.classList.add('hidden');
+            }
         });
     </script>
 </body>
