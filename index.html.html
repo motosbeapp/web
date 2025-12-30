@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BELMOTOS - Gestión Técnica</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-slate-50 min-h-screen">
+    <div id="app" class="flex flex-col md:flex-row min-h-screen">
+        <!-- Sidebar para escritorio -->
+        <aside class="hidden md:flex flex-col w-64 bg-gradient-to-b from-emerald-800 to-emerald-900 text-white p-6 sidebar-transition shadow-xl">
+            <div class="flex items-center mb-10">
+                <div class="w-12 h-12 rounded-3xl bg-white flex items-center justify-center mr-3">
+                    <span class="text-emerald-700 font-bold text-xl">BM</span>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold">BELMOTOS</h1>
+                    <p class="text-emerald-200 text-xs">Gestión Técnica</p>
+                </div>
+            </div>
+            
+            <nav class="flex-1">
+                <ul class="space-y-2">
+                    <li>
+                        <a href="#" data-view="reception" class="nav-link flex items-center p-3 rounded-2xl hover:bg-emerald-700 transition-all duration-300 active">
+                            <i data-lucide="clipboard-check" class="mr-3"></i>
+                            <span>Recepción</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-view="orders" class="nav-link flex items-center p-3 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                            <i data-lucide="wrench" class="mr-3"></i>
+                            <span>Gestión de Órdenes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-view="reports" class="nav-link flex items-center p-3 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                            <i data-lucide="file-text" class="mr-3"></i>
+                            <span>Informes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" data-view="settings" class="nav-link flex items-center p-3 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                            <i data-lucide="settings" class="mr-3"></i>
+                            <span>Configuración</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="pt-6 border-t border-emerald-700">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center mr-3">
+                        <i data-lucide="user"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium">Técnico</p>
+                        <p class="text-emerald-200 text-xs">Sesión activa</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        
+        <!-- Header para móvil -->
+        <header class="md:hidden flex items-center justify-between p-4 bg-gradient-to-r from-emerald-700 to-emerald-800 text-white shadow-lg">
+            <div class="flex items-center">
+                <button id="mobile-menu-btn" class="mr-3">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 rounded-2xl bg-white flex items-center justify-center mr-2">
+                        <span class="text-emerald-700 font-bold">BM</span>
+                    </div>
+                    <h1 class="text-lg font-bold">BELMOTOS</h1>
+                </div>
+            </div>
+            <div>
+                <i data-lucide="bell" class="w-5 h-5"></i>
+            </div>
+        </header>
+        
+        <!-- Menú móvil (oculto por defecto) -->
+        <div id="mobile-menu" class="md:hidden hidden fixed inset-0 bg-emerald-900 bg-opacity-95 z-50">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-10">
+                    <div class="flex items-center">
+                        <div class="w-12 h-12 rounded-2xl bg-white flex items-center justify-center mr-3">
+                            <span class="text-emerald-700 font-bold text-xl">BM</span>
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-bold">BELMOTOS</h1>
+                            <p class="text-emerald-200 text-xs">Gestión Técnica</p>
+                        </div>
+                    </div>
+                    <button id="close-mobile-menu">
+                        <i data-lucide="x" class="w-8 h-8"></i>
+                    </button>
+                </div>
+                
+                <nav>
+                    <ul class="space-y-4">
+                        <li>
+                            <a href="#" data-view="reception" class="mobile-nav-link flex items-center p-4 rounded-2xl bg-emerald-700">
+                                <i data-lucide="clipboard-check" class="mr-3"></i>
+                                <span>Recepción</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-view="orders" class="mobile-nav-link flex items-center p-4 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                                <i data-lucide="wrench" class="mr-3"></i>
+                                <span>Gestión de Órdenes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-view="reports" class="mobile-nav-link flex items-center p-4 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                                <i data-lucide="file-text" class="mr-3"></i>
+                                <span>Informes</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" data-view="settings" class="mobile-nav-link flex items-center p-4 rounded-2xl hover:bg-emerald-700 transition-all duration-300">
+                                <i data-lucide="settings" class="mr-3"></i>
+                                <span>Configuración</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        
+        <!-- Contenido principal -->
+        <main class="flex-1 p-4 md:p-8 overflow-y-auto custom-scrollbar">
+            <!-- Notificaciones -->
+            <div id="notification-container" class="fixed top-4 right-4 z-50 max-w-sm"></div>
+            
+            <!-- Vista de Recepción (Activa por defecto) -->
+            <section id="reception-view" class="view-section">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Recepción de Vehículos</h2>
+                    <p class="text-slate-600">Complete el formulario para registrar una nueva moto en el taller</p>
+                </div>
+                
+                <form id="reception-form" class="bg-white rounded-3xl shadow-lg p-6 md:p-8">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Sección del Propietario -->
+                        <div>
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="user" class="text-emerald-700"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800">Datos del Propietario</h3>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Nombre completo *</label>
+                                    <input type="text" id="owner-name" required 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Identificación (C.I./RIF) *</label>
+                                    <input type="text" id="owner-id" required 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Teléfono *</label>
+                                    <input type="tel" id="owner-phone" required 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Correo electrónico</label>
+                                    <input type="email" id="owner-email" 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Sección de la Moto -->
+                        <div>
+                            <div class="flex items-center mb-6">
+                                <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                    <i data-lucide="bike" class="text-emerald-700"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-slate-800">Datos de la Moto</h3>
+                            </div>
+                            
+                            <div class="space-y-4">
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-slate-700 mb-2">Placa *</label>
+                                        <input type="text" id="motorcycle-plate" required 
+                                               class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                    </div>
+                                    <div>
+                                        <label class="block text-slate-700 mb-2">Año *</label>
+                                        <input type="number" id="motorcycle-year" required min="1900" max="2025" 
+                                               class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Modelo *</label>
+                                    <input type="text" id="motorcycle-model" required 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Kilometraje (KM)</label>
+                                    <input type="number" id="motorcycle-km" min="0" 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-slate-700 mb-2">Serial del Chasis</label>
+                                        <input type="text" id="motorcycle-chassis" 
+                                               class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                    </div>
+                                    <div>
+                                        <label class="block text-slate-700 mb-2">Serial del Motor</label>
+                                        <input type="text" id="motorcycle-engine" 
+                                               class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Reporte del Cliente -->
+                    <div class="mt-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                <i data-lucide="message-square" class="text-emerald-700"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Reporte del Cliente</h3>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-6">
+                            <label class="block text-slate-700 mb-4">Problemas reportados por el cliente *</label>
+                            <textarea id="client-report" rows="3" required 
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
+                                      placeholder="Describa los problemas que el cliente reporta con la moto..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Observaciones Técnicas -->
+                    <div class="mt-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                <i data-lucide="clipboard-list" class="text-emerald-700"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Observaciones Técnicas Iniciales</h3>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-6">
+                            <label class="block text-slate-700 mb-4">Observaciones del técnico de recepción</label>
+                            <textarea id="technical-observations" rows="3" 
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
+                                      placeholder="Registre aquí sus observaciones técnicas iniciales..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Checklist de Inventario -->
+                    <div class="mt-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                <i data-lucide="clipboard-list" class="text-emerald-700"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Checklist de Inspección</h3>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-4">
+                            <div class="max-h-[600px] overflow-y-auto custom-scrollbar">
+                                <div id="checklist-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                                    <!-- Los items del checklist se insertarán aquí -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Captura de Evidencia -->
+                    <div class="mt-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                <i data-lucide="camera" class="text-emerald-700"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Evidencia Fotográfica</h3>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label class="block text-slate-700 mb-4">Foto General de la Moto</label>
+                                    <div class="file-input-wrapper">
+                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                                            <i data-lucide="upload" class="w-12 h-12 mb-4"></i>
+                                            <span>Haga clic para subir foto</span>
+                                            <span class="text-sm mt-2">O arrastre y suelte</span>
+                                        </button>
+                                        <input type="file" id="general-photo" accept="image/*" class="w-full h-full">
+                                    </div>
+                                    <div id="general-photo-preview" class="mt-4 hidden">
+                                        <p class="text-slate-700 mb-2">Vista previa:</p>
+                                        <div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200">
+                                            <img id="general-photo-img" class="w-full h-full object-cover" alt="Vista previa foto general">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-slate-700 mb-4">Foto del Serial del Chasis</label>
+                                    <div class="file-input-wrapper">
+                                        <button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                                            <i data-lucide="upload" class="w-12 h-12 mb-4"></i>
+                                            <span>Haga clic para subir foto</span>
+                                            <span class="text-sm mt-2">O arrastre y suelte</span>
+                                        </button>
+                                        <input type="file" id="chassis-photo" accept="image/*" class="w-full h-full">
+                                    </div>
+                                    <div id="chassis-photo-preview" class="mt-4 hidden">
+                                        <p class="text-slate-700 mb-2">Vista previa:</p>
+                                        <div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200">
+                                            <img id="chassis-photo-img" class="w-full h-full object-cover" alt="Vista previa serial chasis">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Condiciones Legales -->
+                    <div class="mt-10">
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3">
+                                <i data-lucide="file-text" class="text-emerald-700"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-slate-800">Condiciones del Servicio</h3>
+                        </div>
+                        
+                        <div class="bg-slate-50 rounded-2xl p-6 max-h-60 overflow-y-auto custom-scrollbar">
+                            <p class="text-slate-700 mb-4">
+                                Al registrar mi vehículo en el taller BELMOTOS, acepto las siguientes condiciones:
+                            </p>
+                            <ol class="list-decimal pl-5 space-y-2 text-slate-700">
+                                <li>Autorizo al taller BELMOTOS para realizar las reparaciones necesarias en mi vehículo.</li>
+                                <li>Comprendo que el costo final puede variar según las piezas requeridas y el tiempo de mano de obra.</li>
+                                <li>Acepto que el taller no se hace responsable por objetos de valor dejados dentro del vehículo.</li>
+                                <li>Autorizo al taller a realizar pruebas de funcionamiento necesarias para verificar las reparaciones.</li>
+                                <li>Me comprometo a retirar el vehículo dentro de los 15 días hábiles posteriores a la notificación de culminación del servicio.</li>
+                                <li>Para retirar el vehículo debo presentar mi documento de identificación y la orden de servicio.</li>
+                            </ol>
+                        </div>
+                        
+                        <div class="mt-6 flex items-center">
+                            <input type="checkbox" id="accept-terms" required class="w-5 h-5 mr-3 rounded-lg">
+                            <label for="accept-terms" class="text-slate-700">He leído y acepto las condiciones del servicio *</label>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de acción -->
+                    <div class="mt-10 flex flex-col sm:flex-row justify-end gap-4">
+                        <button type="reset" class="px-8 py-3 border-2 border-slate-300 text-slate-700 rounded-2xl hover:bg-slate-50 transition-all duration-300 font-medium">
+                            Limpiar formulario
+                        </button>
+                        <button type="submit" id="save-reception" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg hover:shadow-xl font-medium flex items-center justify-center">
+                            <i data-lucide="save" class="mr-2"></i>
+                            Guardar y generar orden
+                        </button>
+                    </div>
+                </form>
+            </section>
+            
+            <!-- Vista de Gestión de Órdenes -->
+            <section id="orders-view" class="view-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Gestión de Órdenes de Trabajo</h2>
+                    <p class="text-slate-600">Busque, filtre y gestione todas las órdenes activas en el taller</p>
+                </div>
+                
+                <!-- Filtros y búsqueda -->
+                <div class="bg-white rounded-3xl shadow-lg p-6 mb-8">
+                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                        <div class="relative w-full md:w-auto md:flex-1 max-w-lg">
+                            <i data-lucide="search" class="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="search-orders" placeholder="Buscar por placa, ID o cliente..." 
+                                   class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                        </div>
+                        
+                        <div class="flex flex-wrap gap-3">
+                            <button class="filter-btn px-5 py-2.5 bg-emerald-600 text-white rounded-2xl font-medium" data-status="all">
+                                Todas
+                            </button>
+                            <button class="filter-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300 transition-all" data-status="pending">
+                                Pendientes
+                            </button>
+                            <button class="filter-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200 transition-all" data-status="in-progress">
+                                En Proceso
+                            </button>
+                            <button class="filter-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200 transition-all" data-status="completed">
+                                Completadas
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Lista de órdenes -->
+                <div id="orders-list" class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <!-- Las órdenes se cargarán aquí dinámicamente -->
+                </div>
+                
+                <!-- Mensaje cuando no hay órdenes -->
+                <div id="empty-orders-message" class="hidden text-center py-16">
+                    <div class="w-24 h-24 rounded-3xl bg-emerald-100 flex items-center justify-center mx-auto mb-6">
+                        <i data-lucide="inbox" class="w-12 h-12 text-emerald-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-700 mb-2">No hay órdenes registradas</h3>
+                    <p class="text-slate-600 mb-6">Comience registrando una nueva recepción de vehículo.</p>
+                    <button id="go-to-reception" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg font-medium">
+                        Ir a Recepción
+                    </button>
+                </div>
+            </section>
+            
+            <!-- Vista de Informes -->
+            <section id="reports-view" class="view-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Informes Técnicos</h2>
+                    <p class="text-slate-600">Genere y descargue informes técnicos de las órdenes completadas</p>
+                </div>
+                
+                <div class="bg-white rounded-3xl shadow-lg p-8">
+                    <div class="flex items-center mb-8">
+                        <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center mr-4">
+                            <i data-lucide="file-text" class="text-emerald-700"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-bold text-slate-800">Generar Informe Técnico</h3>
+                            <p class="text-slate-600">Seleccione una orden completada para generar el informe técnico en PDF</p>
+                        </div>
+                    </div>
+                    
+                    <div id="reports-list" class="space-y-4">
+                        <!-- Las órdenes completadas para informes se cargarán aquí -->
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Vista de Configuración -->
+            <section id="settings-view" class="view-section hidden">
+                <div class="mb-8">
+                    <h2 class="text-3xl font-bold text-slate-800 mb-2">Configuración</h2>
+                    <p class="text-slate-600">Personalice la aplicación según sus necesidades</p>
+                </div>
+                
+                <div class="bg-white rounded-3xl shadow-lg p-8">
+                    <div class="max-w-2xl">
+                        <div class="mb-10">
+                            <h3 class="text-xl font-bold text-slate-800 mb-6">Preferencias de la aplicación</h3>
+                            
+                            <div class="space-y-6">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-slate-800">Notificaciones automáticas</h4>
+                                        <p class="text-slate-600 text-sm">Recibir notificaciones al crear nuevas órdenes</p>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="checkbox" id="notifications-toggle" class="sr-only" checked>
+                                        <label for="notifications-toggle" class="block w-14 h-8 rounded-full bg-emerald-600 cursor-pointer"></label>
+                                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h4 class="font-medium text-slate-800">Generar PDF automáticamente</h4>
+                                        <p class="text-slate-600 text-sm">Crear PDF de recepción al guardar una nueva orden</p>
+                                    </div>
+                                    <div class="relative">
+                                        <input type="checkbox" id="pdf-toggle" class="sr-only" checked>
+                                        <label for="pdf-toggle" class="block w-14 h-8 rounded-full bg-emerald-600 cursor-pointer"></label>
+                                        <div class="dot absolute left-1 top-1 bg-white w-6 h-6 rounded-full transition transform"></div>
+                                    </div>
+                                </div>
+                                
+                                <div class="pt-6 border-t border-slate-200">
+                                    <h4 class="font-medium text-slate-800 mb-4">Datos de la empresa</h4>
+                                    <div class="space-y-4">
+                                        <div>
+                                            <label class="block text-slate-700 mb-2">Nombre del taller</label>
+                                            <input type="text" id="workshop-name" value="BELMOTOS" 
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-slate-700 mb-2">Dirección</label>
+                                            <input type="text" id="workshop-address" 
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                        </div>
+                                        
+                                        <div>
+                                            <label class="block text-slate-700 mb-2">Teléfono</label>
+                                            <input type="text" id="workshop-phone" 
+                                                   class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="pt-6 border-t border-slate-200">
+                                    <h4 class="font-medium text-slate-800 mb-4">Gestión de datos</h4>
+                                    <div class="flex flex-col sm:flex-row gap-4">
+                                        <button id="export-data" class="px-5 py-3 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 transition-all duration-300 font-medium">
+                                            Exportar datos
+                                        </button>
+                                        <button id="clear-data" class="px-5 py-3 border-2 border-red-300 text-red-600 rounded-2xl hover:bg-red-50 transition-all duration-300 font-medium">
+                                            Limpiar todos los datos
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <!-- Modal para Edición Técnica -->
+    <div id="edit-order-modal" class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Header del modal -->
+            <div class="p-6 border-b border-slate-200">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800">Orden #<span id="modal-order-id"></span></h3>
+                        <p class="text-slate-600">Placa: <span id="modal-order-plate"></span> | Cliente: <span id="modal-order-client"></span></p>
+                    </div>
+                    <button id="close-edit-modal" class="w-10 h-10 rounded-2xl hover:bg-slate-100 flex items-center justify-center transition-all">
+                        <i data-lucide="x" class="w-6 h-6"></i>
+                    </button>
+                </div>
+                
+                <!-- Pestañas del modal -->
+                <div class="mt-6 flex border-b border-slate-200">
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="info">
+                        Información General
+                    </button>
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="progress">
+                        Avances y Reparaciones
+                    </button>
+                    <button class="modal-tab px-6 py-3 font-medium text-slate-700 border-b-2 border-transparent hover:text-emerald-700 transition-all" data-tab="management">
+                        Gestión y Costos
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Contenido del modal -->
+            <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
+                <!-- Pestaña de Información General -->
+                <div id="tab-info" class="modal-tab-content">
+                    <!-- Contenido de información general -->
+                </div>
+                
+                <!-- Pestaña de Avances y Reparaciones -->
+                <div id="tab-progress" class="modal-tab-content hidden">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Notas Técnicas</h4>
+                            <textarea id="technical-notes" rows="4" 
+                                      class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-textarea" 
+                                      placeholder="Registre aquí las observaciones técnicas, diagnósticos y reparaciones realizadas..."></textarea>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Horas de Trabajo</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Horas estimadas</label>
+                                    <input type="number" id="estimated-hours" min="0" step="0.5" 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Horas reales</label>
+                                    <input type="number" id="actual-hours" min="0" step="0.5" 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all">
+                                </div>
+                                <div>
+                                    <label class="block text-slate-700 mb-2">Técnico asignado</label>
+                                    <input type="text" id="assigned-technician" 
+                                           class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent transition-all uppercase-input">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Evidencia de Reparación</h4>
+                            <div class="bg-slate-50 rounded-2xl p-6">
+                                <div class="file-input-wrapper">
+                                    <button type="button" id="add-repair-photo" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                                        <i data-lucide="camera" class="w-12 h-12 mb-4"></i>
+                                        <span>Agregar fotos de la reparación</span>
+                                        <span class="text-sm mt-2">Máx. 5 fotos</span>
+                                    </button>
+                                    <input type="file" id="repair-photos" accept="image/*" multiple class="w-full h-full">
+                                </div>
+                                <div id="repair-photos-preview" class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                                    <!-- Las fotos de reparación se mostrarán aquí -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Pestaña de Gestión y Costos -->
+                <div id="tab-management" class="modal-tab-content hidden">
+                    <div class="space-y-6">
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Costos de Reparación</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div class="bg-slate-50 rounded-2xl p-6">
+                                    <h5 class="font-bold text-slate-800 mb-4">Costos de Partes</h5>
+                                    <div id="parts-costs" class="space-y-4">
+                                        <!-- Los costos de partes se agregarán dinámicamente -->
+                                    </div>
+                                    <button id="add-part-cost" class="mt-4 px-4 py-2 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 transition-all duration-300 font-medium flex items-center">
+                                        <i data-lucide="plus" class="mr-2"></i>
+                                        Agregar parte
+                                    </button>
+                                </div>
+                                
+                                <div class="bg-slate-50 rounded-2xl p-6">
+                                    <h5 class="font-bold text-slate-800 mb-4">Resumen de Costos</h5>
+                                    <div class="space-y-3">
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-700">Mano de obra</span>
+                                            <span id="labor-cost" class="font-medium">$0.00</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-700">Partes y repuestos</span>
+                                            <span id="parts-total" class="font-medium">$0.00</span>
+                                        </div>
+                                        <div class="flex justify-between">
+                                            <span class="text-slate-700">Otros gastos</span>
+                                            <input type="number" id="other-costs" min="0" step="0.01" value="0" 
+                                                   class="w-32 p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500">
+                                        </div>
+                                        <div class="pt-3 border-t border-slate-300 flex justify-between">
+                                            <span class="text-slate-800 font-bold">Total</span>
+                                            <span id="total-cost" class="text-xl font-bold text-emerald-700">$0.00</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-lg font-bold text-slate-800 mb-4">Estado de la Orden</h4>
+                            <div class="flex flex-wrap gap-4">
+                                <button class="status-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300 transition-all" data-status="pending">
+                                    Pendiente
+                                </button>
+                                <button class="status-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200 transition-all" data-status="in-progress">
+                                    En Proceso
+                                </button>
+                                <button class="status-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200 transition-all" data-status="completed">
+                                    Completada
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="pt-6 border-t border-slate-200">
+                            <div class="flex justify-between items-center">
+                                <button id="generate-technical-report" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 transition-all duration-300 shadow-lg font-medium flex items-center">
+                                    <i data-lucide="file-text" class="mr-2"></i>
+                                    Generar Informe Técnico (PDF)
+                                </button>
+                                
+                                <button id="save-order-changes" class="px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl hover:from-slate-900 hover:to-slate-950 transition-all duration-300 shadow-lg font-medium flex items-center">
+                                    <i data-lucide="save" class="mr-2"></i>
+                                    Guardar Cambios
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://unpkg.com/date-fns@2.30.0/esm/index.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
