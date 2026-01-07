@@ -745,7 +745,7 @@
                                             <span id="labor-cost" class="font-medium">$0.00</span>
                                         </div>
                                         <div class="flex justify-between">
-                                            <span class="text-slate-700">Partes y repuestos</span>
+                                            <span class="text-slate-700">Partes, repuestos y servicios</span>
                                             <span id="parts-total" class="font-medium">$0.00</span>
                                         </div>
                                         <div class="flex justify-between">
@@ -1528,27 +1528,40 @@
             if (order.costs.parts && order.costs.parts.length > 0) {
                 order.costs.parts.forEach((part, index) => {
                     const partElement = document.createElement('div');
-                    partElement.className = 'flex items-center gap-3';
+                    partElement.className = 'part-item flex items-center gap-3 mb-3';
                     partElement.innerHTML = `
                         <div class="flex-1">
-                            <input type="text" value="${part.name}" 
-                                   class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" placeholder="Nombre de la parte">
+                            <input type="text" value="${part.name || ''}" 
+                                   class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" 
+                                   placeholder="Nombre de la parte">
                         </div>
                         <div class="w-32">
-                            <input type="number" value="${part.cost}" min="0" step="0.01" 
-                                   class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Costo">
+                            <input type="number" value="${part.cost || 0}" min="0" step="0.01" 
+                                   class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" 
+                                   placeholder="0.00">
                         </div>
                         <button class="remove-part-btn w-10 h-10 rounded-xl hover:bg-red-50 text-red-600 flex items-center justify-center" data-index="${index}">
                             <i data-lucide="trash-2" class="w-4 h-4"></i>
                         </button>
                     `;
                     partsContainer.appendChild(partElement);
+                    
+                    // Agregar eventos a los inputs
+                    const nameInput = partElement.querySelector('.part-name');
+                    const costInput = partElement.querySelector('.part-cost');
+                    
+                    nameInput.addEventListener('input', updateTotalCost);
+                    nameInput.addEventListener('change', updateTotalCost);
+                    costInput.addEventListener('input', updateTotalCost);
+                    costInput.addEventListener('change', updateTotalCost);
                 });
             }
             
             // Actualizar costos
-            document.getElementById('labor-cost').textContent = `$${order.costs.labor.toFixed(2)}`;
-            document.getElementById('other-costs').value = order.costs.other;
+            document.getElementById('labor-cost').textContent = '$0.00'; // Fijar en 0
+            document.getElementById('other-costs').value = order.costs.other || 0;
+            
+            // Actualizar totales
             updateTotalCost();
             
             // Establecer estado activo
@@ -1583,7 +1596,7 @@
             });
         }
         
-        // Actualizar costo total
+        // Actualizar costo total - VERSIÓN MODIFICADA
         function updateTotalCost() {
             const order = orders.find(o => o.id === currentEditOrderId);
             if (!order) return;
@@ -1597,33 +1610,40 @@
             // Obtener otros costos
             const otherCosts = parseFloat(document.getElementById('other-costs').value) || 0;
             
-            // Calcular mano de obra (suponiendo $20 por hora)
-            const laborRate = 20;
-            const actualHours = parseFloat(document.getElementById('actual-hours').value) || 0;
-            const laborCost = actualHours * laborRate;
+            // Calcular total SOLO con partes y otros costos
+            const totalCost = partsTotal + otherCosts;
             
-            // Calcular total
-            const totalCost = partsTotal + otherCosts + laborCost;
-            
-            // Actualizar UI
+            // Actualizar UI - MOSTRAMOS 0 EN MANO DE OBRA Y SOLO PARTES + OTROS
             document.getElementById('parts-total').textContent = `$${partsTotal.toFixed(2)}`;
-            document.getElementById('labor-cost').textContent = `$${laborCost.toFixed(2)}`;
+            document.getElementById('labor-cost').textContent = `$0.00`; // Fijamos en 0
             document.getElementById('total-cost').textContent = `$${totalCost.toFixed(2)}`;
             
             // Actualizar en el objeto order
-            order.costs.labor = laborCost;
+            order.costs.labor = 0; // Fijamos mano de obra en 0
             order.costs.other = otherCosts;
             order.costs.total = totalCost;
             
-            // Actualizar partes
+            // Actualizar partes en el objeto order
             order.costs.parts = [];
             document.querySelectorAll('.part-name').forEach((nameInput, index) => {
                 const costInput = document.querySelectorAll('.part-cost')[index];
-                order.costs.parts.push({
-                    name: nameInput.value,
-                    cost: parseFloat(costInput.value) || 0
-                });
+                if (nameInput && costInput) {
+                    order.costs.parts.push({
+                        name: nameInput.value,
+                        cost: parseFloat(costInput.value) || 0
+                    });
+                }
             });
+        }
+        
+        // Eliminar parte de costos
+        function removePart(index) {
+            const order = orders.find(o => o.id === currentEditOrderId);
+            if (!order || !order.costs.parts) return;
+            
+            order.costs.parts.splice(index, 1);
+            loadOrderManagementTab(order);
+            updateTotalCost(); // Actualizar total después de eliminar
         }
         
         // Eliminar foto de reparación
@@ -2092,7 +2112,7 @@
                 yPos += (splitDiagnosis.length * 5) + 10;
                 
                 // ----------------------
-                // DETALLE DE TRABAJO
+                // DETALLE DE TRABAJO (con horas pero sin costo de mano de obra)
                 // ----------------------
                 if (yPos > 180) {
                     doc.addPage();
@@ -2105,7 +2125,7 @@
                 
                 yPos += 7;
                 
-                // Técnico y horas
+                // Técnico y horas (SIN costo de mano de obra)
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(10);
                 
@@ -2120,7 +2140,7 @@
                 yPos += 10;
                 
                 // ----------------------
-                // COSTOS DETALLADOS
+                // COSTOS DETALLADOS (SIN mano de obra)
                 // ----------------------
                 doc.setFont("helvetica", "bold");
                 doc.setFontSize(12);
@@ -2139,14 +2159,10 @@
                 
                 yPos += 10;
                 
-                // Mano de obra
+                // Partes y repuestos
                 doc.setFont("helvetica", "normal");
                 doc.setFontSize(9);
-                doc.text("Mano de obra", marginLeft + 2, yPos);
-                doc.text(`$${order.costs.labor.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
-                yPos += 6;
                 
-                // Partes y repuestos
                 if (order.costs.parts && order.costs.parts.length > 0) {
                     order.costs.parts.forEach(part => {
                         doc.text(part.name, marginLeft + 2, yPos);
@@ -2156,9 +2172,11 @@
                 }
                 
                 // Otros gastos
-                doc.text("Otros gastos", marginLeft + 2, yPos);
-                doc.text(`$${order.costs.other.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
-                yPos += 8;
+                if (order.costs.other > 0) {
+                    doc.text("Otros gastos", marginLeft + 2, yPos);
+                    doc.text(`$${order.costs.other.toFixed(2)}`, marginLeft + contentWidth - 20, yPos, { align: 'right' });
+                    yPos += 8;
+                }
                 
                 // Total
                 doc.setFont("helvetica", "bold");
@@ -2332,21 +2350,23 @@
                 }
             });
             
-            // Agregar costo de parte
+            // Agregar costo de parte (VERSIÓN CORREGIDA)
             document.getElementById('add-part-cost').addEventListener('click', function() {
                 const partsContainer = document.getElementById('parts-costs');
-                const partIndex = partsContainer.children.length;
+                const partIndex = partsContainer.querySelectorAll('.part-item').length;
                 
                 const partElement = document.createElement('div');
-                partElement.className = 'flex items-center gap-3';
+                partElement.className = 'part-item flex items-center gap-3 mb-3';
                 partElement.innerHTML = `
                     <div class="flex-1">
                         <input type="text" 
-                               class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" placeholder="Nombre de la parte">
+                               class="part-name w-full p-2 border border-slate-300 rounded-xl focus:outline-none focus:ring-1 focus:ring-emerald-500 uppercase-input" 
+                               placeholder="Nombre de la parte">
                     </div>
                     <div class="w-32">
                         <input type="number" min="0" step="0.01" 
-                               class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Costo">
+                               class="part-cost w-full p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" 
+                               placeholder="0.00">
                     </div>
                     <button class="remove-part-btn w-10 h-10 rounded-xl hover:bg-red-50 text-red-600 flex items-center justify-center" data-index="${partIndex}">
                         <i data-lucide="trash-2" class="w-4 h-4"></i>
@@ -2361,29 +2381,30 @@
                         const cursorPosition = this.selectionStart;
                         this.value = this.value.toUpperCase();
                         this.setSelectionRange(cursorPosition, cursorPosition);
+                        updateTotalCost(); // Actualizar al escribir nombre
                     });
                 }
                 
+                // Agregar eventos a los inputs para actualizar costos
+                const costInput = partElement.querySelector('.part-cost');
+                costInput.addEventListener('input', updateTotalCost);
+                costInput.addEventListener('change', updateTotalCost);
+                
                 // Agregar evento al botón de eliminar
                 partElement.querySelector('.remove-part-btn').addEventListener('click', function() {
-                    partElement.remove();
-                    updateTotalCost();
+                    removePart(parseInt(this.getAttribute('data-index')));
                 });
                 
-                // Agregar eventos a los inputs para actualizar costos
-                partElement.querySelector('.part-cost').addEventListener('input', updateTotalCost);
-                partElement.querySelector('.part-name').addEventListener('input', updateTotalCost);
-                
                 lucide.createIcons();
+                updateTotalCost(); // Actualizar al agregar nueva parte
             });
             
-            // Eliminar parte (evento delegado)
+            // Eliminar parte (evento delegado) - MODIFICADO
             document.getElementById('parts-costs').addEventListener('click', function(e) {
                 if (e.target.closest('.remove-part-btn')) {
                     const btn = e.target.closest('.remove-part-btn');
-                    const partElement = btn.closest('.flex.items-center');
-                    partElement.remove();
-                    updateTotalCost();
+                    const index = parseInt(btn.getAttribute('data-index'));
+                    removePart(index);
                 }
             });
             
@@ -2471,12 +2492,8 @@
             });
         });
         
-        // Cerrar modal haciendo clic fuera de él
-        document.getElementById('edit-order-modal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                this.classList.add('hidden');
-            }
-        });
+        // NOTA: Se ha eliminado el evento que cerraba el modal al hacer clic fuera
+        // Esto previene que se pierda información no guardada
     </script>
 </body>
 </html>
