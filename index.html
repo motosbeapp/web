@@ -75,7 +75,6 @@
         .photo-preview-container .remove-photo-btn:active {
             transform: scale(0.9);
         }
-        /* Estilo para el botón de eliminar en reparaciones */
         .repair-photo-remove {
             position: absolute;
             top: -10px;
@@ -102,7 +101,6 @@
         .repair-photo-remove:active {
             transform: scale(0.9);
         }
-        /* Mejoras para móvil */
         @media (max-width: 640px) {
             .photo-preview-container .remove-photo-btn {
                 width: 40px;
@@ -119,13 +117,25 @@
                 font-size: 20px;
             }
         }
-        /* Estilos para los botones de selección de archivos */
         .file-input-btn {
             touch-action: manipulation;
         }
-        /* Prevenir zoom en inputs en iOS */
         input, select, textarea {
             font-size: 16px !important;
+        }
+        /* Spinner de carga */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #10b981;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
+            display: inline-block;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -285,7 +295,14 @@
                     
                     <div class="mt-10"><div class="flex items-center mb-6"><div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3"><i data-lucide="file-text" class="text-emerald-700"></i></div><h3 class="text-xl font-bold text-slate-800">Condiciones del Servicio</h3></div><div class="bg-slate-50 rounded-2xl p-6 max-h-60 overflow-y-auto custom-scrollbar"><p class="text-slate-700 mb-4">Al registrar mi vehículo en el taller, acepto las siguientes condiciones:</p><ol class="list-decimal pl-5 space-y-2 text-slate-700"><li>Autorizo al taller para realizar las reparaciones necesarias en mi vehículo.</li><li>Comprendo que el costo final puede variar según las piezas requeridas y el tiempo de mano de obra.</li><li>Acepto que el taller no se hace responsable por objetos de valor dejados dentro del vehículo.</li><li>Autorizo al taller a realizar pruebas de funcionamiento necesarias para verificar las reparaciones.</li><li>Me comprometo a retirar el vehículo dentro de los 15 días hábiles posteriores a la notificación de culminación del servicio.</li><li>Para retirar el vehículo debo presentar mi documento de identificación y la orden de servicio.</li></ol></div><div class="mt-6 flex items-center"><input type="checkbox" id="accept-terms" required class="w-5 h-5 mr-3 rounded-lg"><label for="accept-terms" class="text-slate-700">He leído y acepto las condiciones del servicio *</label></div></div>
                     
-                    <div class="mt-10 flex flex-col sm:flex-row justify-end gap-4"><button type="reset" class="px-8 py-3 border-2 border-slate-300 text-slate-700 rounded-2xl hover:bg-slate-50 font-medium">Limpiar formulario</button><button type="submit" id="save-reception" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 shadow-lg font-medium flex items-center"><i data-lucide="save" class="mr-2"></i>Guardar y generar orden</button></div>
+                    <div class="mt-10 flex flex-col sm:flex-row justify-end gap-4">
+                        <button type="reset" class="px-8 py-3 border-2 border-slate-300 text-slate-700 rounded-2xl hover:bg-slate-50 font-medium">Limpiar formulario</button>
+                        <button type="submit" id="save-reception" class="px-8 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 shadow-lg font-medium flex items-center justify-center">
+                            <i data-lucide="save" class="mr-2"></i>
+                            <span>Guardar y generar orden</span>
+                            <span id="save-spinner" class="hidden ml-2"><span class="spinner"></span></span>
+                        </button>
+                    </div>
                 </form>
             </section>
             
@@ -451,14 +468,11 @@
                     container.appendChild(div);
                     const label = div.querySelector('.checklist-label');
                     const cb = div.querySelector('.checklist-checkbox');
-                    // Click en toda la label activa el checkbox - Mejorado para móvil
                     label.addEventListener('click', function(e) {
-                        // Si el click fue en el checkbox, no hacer nada para evitar doble toggle
                         if (e.target === cb) return;
                         e.preventDefault();
                         toggleCheck(cb);
                     });
-                    // También permitir click directo en el checkbox
                     cb.addEventListener('click', function(e) {
                         e.stopPropagation();
                     });
@@ -482,7 +496,6 @@
         
         function setupPhotoRemoval() {
             document.querySelectorAll('.remove-photo-btn').forEach(btn => {
-                // Remover listeners anteriores para evitar duplicados
                 btn.removeEventListener('click', handleRemovePhoto);
                 btn.addEventListener('click', handleRemovePhoto);
             });
@@ -514,63 +527,161 @@
         }
         
         // ============================================
+        // FUNCIONES PARA COMPRIMIR IMÁGENES
+        // ============================================
+        
+        function compressImage(dataUrl, maxWidth = 800, maxHeight = 600, quality = 0.7) {
+            return new Promise((resolve, reject) => {
+                try {
+                    const img = new Image();
+                    img.onload = function() {
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Calcular nuevas dimensiones manteniendo proporción
+                        if (width > maxWidth) {
+                            height = (height * maxWidth) / width;
+                            width = maxWidth;
+                        }
+                        if (height > maxHeight) {
+                            width = (width * maxHeight) / height;
+                            height = maxHeight;
+                        }
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        // Comprimir como JPEG
+                        const compressedDataUrl = canvas.toDataURL('image/jpeg', quality);
+                        resolve(compressedDataUrl);
+                    };
+                    img.onerror = function() {
+                        reject(new Error('Error al cargar la imagen'));
+                    };
+                    img.src = dataUrl;
+                } catch (error) {
+                    reject(error);
+                }
+            });
+        }
+        
+        function getImageSizeInKB(dataUrl) {
+            // Calcular tamaño aproximado en KB
+            const base64 = dataUrl.split(',')[1] || '';
+            const sizeInBytes = (base64.length * 3) / 4;
+            return sizeInBytes / 1024;
+        }
+        
+        // ============================================
         // FUNCIONES DE ÓRDENES
         // ============================================
         
-        function saveReceptionOrder() {
-            const orderId = generateOrderId();
-            const checklistStatus = {};
-            checklistItems.forEach(cat => cat.items.forEach(item => { 
-                const cb = document.getElementById(`check-${item.replace(/\s+/g, '-').toLowerCase()}`); 
-                if(cb) checklistStatus[item] = cb.checked; 
-            }));
+        async function saveReceptionOrder() {
+            const saveBtn = document.getElementById('save-reception');
+            const spinner = document.getElementById('save-spinner');
+            const btnText = saveBtn.querySelector('span:not(.hidden)');
             
-            // Obtener las imágenes como base64
-            const generalImg = document.getElementById('general-photo-img');
-            const chassisImg = document.getElementById('chassis-photo-img');
-            
-            const newOrder = {
-                id: orderId, 
-                date: new Date().toISOString(),
-                owner: { 
-                    name: document.getElementById('owner-name').value, 
-                    id: document.getElementById('owner-id').value, 
-                    phone: document.getElementById('owner-phone').value, 
-                    email: document.getElementById('owner-email').value 
-                },
-                motorcycle: { 
-                    plate: document.getElementById('motorcycle-plate').value, 
-                    model: document.getElementById('motorcycle-model').value, 
-                    km: document.getElementById('motorcycle-km').value, 
-                    year: document.getElementById('motorcycle-year').value, 
-                    chassis: document.getElementById('motorcycle-chassis').value, 
-                    engine: document.getElementById('motorcycle-engine').value 
-                },
-                checklist: checklistStatus,
-                clientReport: document.getElementById('client-report').value,
-                technicalObservations: document.getElementById('technical-observations').value,
-                photos: { 
-                    general: generalImg && generalImg.src && generalImg.src.startsWith('data:') ? generalImg.src : '', 
-                    chassis: chassisImg && chassisImg.src && chassisImg.src.startsWith('data:') ? chassisImg.src : '' 
-                },
-                status: 'pending',
-                progress: { notes: '', estimatedHours: 0, actualHours: 0, technician: '', repairPhotos: [] },
-                costs: { laborHours: 0, laborRate: 0, laborTotal: 0, parts: [], other: 0, total: 0 },
-                spareparts: [],
-                termsAccepted: true
-            };
-            
-            const required = ['owner-name','owner-id','owner-phone','motorcycle-plate','motorcycle-model','motorcycle-year','client-report'];
-            if(required.some(f => !document.getElementById(f).value.trim())) { 
-                showNotification('Complete todos los campos requeridos.', 'error'); 
-                return; 
-            }
-            if(!document.getElementById('accept-terms').checked) { 
-                showNotification('Debe aceptar los términos del servicio.', 'error'); 
-                return; 
-            }
+            // Mostrar spinner
+            saveBtn.disabled = true;
+            spinner.classList.remove('hidden');
+            if (btnText) btnText.textContent = 'Guardando...';
             
             try {
+                const orderId = generateOrderId();
+                const checklistStatus = {};
+                checklistItems.forEach(cat => cat.items.forEach(item => { 
+                    const cb = document.getElementById(`check-${item.replace(/\s+/g, '-').toLowerCase()}`); 
+                    if(cb) checklistStatus[item] = cb.checked; 
+                }));
+                
+                // Obtener y comprimir imágenes
+                let generalPhotoData = '';
+                let chassisPhotoData = '';
+                
+                const generalImg = document.getElementById('general-photo-img');
+                const chassisImg = document.getElementById('chassis-photo-img');
+                
+                if (generalImg && generalImg.src && generalImg.src.startsWith('data:')) {
+                    try {
+                        const compressed = await compressImage(generalImg.src, 800, 600, 0.7);
+                        generalPhotoData = compressed;
+                    } catch (e) {
+                        console.warn('Error comprimiendo foto general, usando original:', e);
+                        generalPhotoData = generalImg.src;
+                    }
+                }
+                
+                if (chassisImg && chassisImg.src && chassisImg.src.startsWith('data:')) {
+                    try {
+                        const compressed = await compressImage(chassisImg.src, 800, 600, 0.7);
+                        chassisPhotoData = compressed;
+                    } catch (e) {
+                        console.warn('Error comprimiendo foto chasis, usando original:', e);
+                        chassisPhotoData = chassisImg.src;
+                    }
+                }
+                
+                const newOrder = {
+                    id: orderId, 
+                    date: new Date().toISOString(),
+                    owner: { 
+                        name: document.getElementById('owner-name').value, 
+                        id: document.getElementById('owner-id').value, 
+                        phone: document.getElementById('owner-phone').value, 
+                        email: document.getElementById('owner-email').value 
+                    },
+                    motorcycle: { 
+                        plate: document.getElementById('motorcycle-plate').value, 
+                        model: document.getElementById('motorcycle-model').value, 
+                        km: document.getElementById('motorcycle-km').value, 
+                        year: document.getElementById('motorcycle-year').value, 
+                        chassis: document.getElementById('motorcycle-chassis').value, 
+                        engine: document.getElementById('motorcycle-engine').value 
+                    },
+                    checklist: checklistStatus,
+                    clientReport: document.getElementById('client-report').value,
+                    technicalObservations: document.getElementById('technical-observations').value,
+                    photos: { 
+                        general: generalPhotoData, 
+                        chassis: chassisPhotoData 
+                    },
+                    status: 'pending',
+                    progress: { notes: '', estimatedHours: 0, actualHours: 0, technician: '', repairPhotos: [] },
+                    costs: { laborHours: 0, laborRate: 0, laborTotal: 0, parts: [], other: 0, total: 0 },
+                    spareparts: [],
+                    termsAccepted: true
+                };
+                
+                const required = ['owner-name','owner-id','owner-phone','motorcycle-plate','motorcycle-model','motorcycle-year','client-report'];
+                if(required.some(f => !document.getElementById(f).value.trim())) { 
+                    showNotification('Complete todos los campos requeridos.', 'error'); 
+                    saveBtn.disabled = false;
+                    spinner.classList.add('hidden');
+                    if (btnText) btnText.textContent = 'Guardar y generar orden';
+                    return; 
+                }
+                if(!document.getElementById('accept-terms').checked) { 
+                    showNotification('Debe aceptar los términos del servicio.', 'error'); 
+                    saveBtn.disabled = false;
+                    spinner.classList.add('hidden');
+                    if (btnText) btnText.textContent = 'Guardar y generar orden';
+                    return; 
+                }
+                
+                // Verificar tamaño total de los datos
+                const orderSize = JSON.stringify(newOrder).length;
+                const maxSize = 4.5 * 1024 * 1024; // 4.5MB para dejar margen
+                if (orderSize > maxSize) {
+                    showNotification('Las imágenes son muy grandes. Intente con fotos más pequeñas.', 'warning');
+                    saveBtn.disabled = false;
+                    spinner.classList.add('hidden');
+                    if (btnText) btnText.textContent = 'Guardar y generar orden';
+                    return;
+                }
+                
                 orders.unshift(newOrder);
                 localStorage.setItem('belmotos-orders', JSON.stringify(orders));
                 showNotification(`Orden #${orderId} creada.`, 'success');
@@ -588,9 +699,15 @@
                 });
                 setupUppercaseInputs();
                 switchView('orders');
+                
             } catch (error) {
                 console.error('Error al guardar la orden:', error);
-                showNotification('Error al guardar la orden. Intente nuevamente.', 'error');
+                showNotification('Error al guardar la orden: ' + error.message, 'error');
+            } finally {
+                saveBtn.disabled = false;
+                spinner.classList.add('hidden');
+                if (btnText) btnText.textContent = 'Guardar y generar orden';
+                lucide.createIcons();
             }
         }
         
@@ -1029,7 +1146,6 @@
             setupUppercaseInputs();
             renderChecklist();
             
-            // Configurar eliminación de fotos al cargar
             setTimeout(setupPhotoRemoval, 100);
             
             if(orders.length) renderOrdersList();
@@ -1052,7 +1168,7 @@
                 renderOrdersList(active?.dataset.status || 'all', this.value);
             });
             
-            // Configuración de inputs de foto con captura de cámara
+            // Configuración de inputs de foto
             const generalPhotoInput = document.getElementById('general-photo');
             const chassisPhotoInput = document.getElementById('chassis-photo');
             
@@ -1080,7 +1196,6 @@
                 }
             });
             
-            // Foto de reparación
             document.getElementById('repair-photos').addEventListener('change', function(e) {
                 const order = orders.find(o=>o.id===currentEditOrderId);
                 if(!order) {
@@ -1101,13 +1216,27 @@
                 for(let i=0; i<Math.min(files.length, remaining); i++){
                     const r = new FileReader();
                     r.onload = function(ev) {
-                        order.progress.repairPhotos.push(ev.target.result);
-                        loaded++;
-                        if(loaded === Math.min(files.length, remaining)) {
-                            loadOrderProgressTab(order);
-                            localStorage.setItem('belmotos-orders', JSON.stringify(orders));
-                            showNotification(`${loaded} foto(s) agregada(s).`, 'success');
-                        }
+                        // Comprimir imagen de reparación
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const maxW = 800, maxH = 600;
+                            let w = img.width, h = img.height;
+                            if (w > maxW) { h = (h * maxW) / w; w = maxW; }
+                            if (h > maxH) { w = (w * maxH) / h; h = maxH; }
+                            canvas.width = w; canvas.height = h;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, w, h);
+                            const compressed = canvas.toDataURL('image/jpeg', 0.7);
+                            order.progress.repairPhotos.push(compressed);
+                            loaded++;
+                            if(loaded === Math.min(files.length, remaining)) {
+                                loadOrderProgressTab(order);
+                                localStorage.setItem('belmotos-orders', JSON.stringify(orders));
+                                showNotification(`${loaded} foto(s) agregada(s).`, 'success');
+                            }
+                        };
+                        img.src = ev.target.result;
                     };
                     r.readAsDataURL(files[i]);
                 }
