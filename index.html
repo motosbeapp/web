@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>BELMOTOS - Gestión Técnica</title>
     
     <!-- ============================================ -->
@@ -31,35 +31,101 @@
         .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #10b981; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #059669; }
-        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; }
-        .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; }
+        .file-input-wrapper { position: relative; overflow: hidden; display: inline-block; width: 100%; }
+        .file-input-wrapper input[type=file] { position: absolute; left: 0; top: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
         .uppercase-input { text-transform: uppercase; }
         .uppercase-input::placeholder { text-transform: none; }
         .uppercase-textarea { text-transform: uppercase; }
         .uppercase-textarea::placeholder { text-transform: none; }
-        .checklist-checkbox { accent-color: #059669; }
+        .checklist-checkbox { accent-color: #059669; width: 20px; height: 20px; flex-shrink: 0; }
+        .checklist-label { 
+            cursor: pointer;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
         .checklist-label:active { transform: scale(0.98); }
-        .photo-preview-container { position: relative; display: inline-block; }
+        .photo-preview-container { 
+            position: relative; 
+            display: inline-block; 
+            width: 100%;
+        }
         .photo-preview-container .remove-photo-btn {
             position: absolute;
-            top: -8px;
-            right: -8px;
-            width: 28px;
-            height: 28px;
+            top: -10px;
+            right: -10px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             background: #ef4444;
             color: white;
-            border: 2px solid white;
+            border: 3px solid white;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+            font-size: 18px;
         }
         .photo-preview-container .remove-photo-btn:hover {
             background: #dc2626;
-            transform: scale(1.1);
+            transform: scale(1.15);
+        }
+        .photo-preview-container .remove-photo-btn:active {
+            transform: scale(0.9);
+        }
+        /* Estilo para el botón de eliminar en reparaciones */
+        .repair-photo-remove {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: white;
+            border: 3px solid white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            z-index: 10;
+            font-size: 18px;
+        }
+        .repair-photo-remove:hover {
+            background: #dc2626;
+            transform: scale(1.15);
+        }
+        .repair-photo-remove:active {
+            transform: scale(0.9);
+        }
+        /* Mejoras para móvil */
+        @media (max-width: 640px) {
+            .photo-preview-container .remove-photo-btn {
+                width: 40px;
+                height: 40px;
+                top: -12px;
+                right: -12px;
+                font-size: 20px;
+            }
+            .repair-photo-remove {
+                width: 40px;
+                height: 40px;
+                top: -12px;
+                right: -12px;
+                font-size: 20px;
+            }
+        }
+        /* Estilos para los botones de selección de archivos */
+        .file-input-btn {
+            touch-action: manipulation;
+        }
+        /* Prevenir zoom en inputs en iOS */
+        input, select, textarea {
+            font-size: 16px !important;
         }
     </style>
 </head>
@@ -174,7 +240,48 @@
                     
                     <div class="mt-10"><div class="flex items-center mb-6"><div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3"><i data-lucide="clipboard-list" class="text-emerald-700"></i></div><h3 class="text-xl font-bold text-slate-800">Checklist de Inspección</h3></div><div class="bg-slate-50 rounded-2xl p-4"><div class="max-h-[600px] overflow-y-auto custom-scrollbar"><div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3"></div></div></div></div>
                     
-                    <div class="mt-10"><div class="flex items-center mb-6"><div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3"><i data-lucide="camera" class="text-emerald-700"></i></div><h3 class="text-xl font-bold text-slate-800">Evidencia Fotográfica</h3></div><div class="bg-slate-50 rounded-2xl p-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div><label class="block text-slate-700 mb-4">Foto General de la Moto</label><div class="file-input-wrapper w-full"><button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600"><i data-lucide="upload" class="w-12 h-12 mb-4"></i><span>Haga clic para subir foto</span><span class="text-sm mt-2">O arrastre y suelte</span></button><input type="file" id="general-photo" accept="image/*" capture="environment" class="w-full h-full"></div><div id="general-photo-preview" class="mt-4 hidden"><p class="text-slate-700 mb-2">Vista previa:</p><div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200 relative photo-preview-container"><img id="general-photo-img" class="w-full h-full object-cover" alt="Vista previa foto general"><button type="button" class="remove-photo-btn" data-target="general-photo" title="Eliminar foto"><i data-lucide="x" class="w-4 h-4"></i></button></div></div></div><div><label class="block text-slate-700 mb-4">Foto del Serial del Chasis</label><div class="file-input-wrapper w-full"><button type="button" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600"><i data-lucide="upload" class="w-12 h-12 mb-4"></i><span>Haga clic para subir foto</span><span class="text-sm mt-2">O arrastre y suelte</span></button><input type="file" id="chassis-photo" accept="image/*" capture="environment" class="w-full h-full"></div><div id="chassis-photo-preview" class="mt-4 hidden"><p class="text-slate-700 mb-2">Vista previa:</p><div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200 relative photo-preview-container"><img id="chassis-photo-img" class="w-full h-full object-cover" alt="Vista previa serial chasis"><button type="button" class="remove-photo-btn" data-target="chassis-photo" title="Eliminar foto"><i data-lucide="x" class="w-4 h-4"></i></button></div></div></div></div></div></div>
+                    <div class="mt-10"><div class="flex items-center mb-6"><div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3"><i data-lucide="camera" class="text-emerald-700"></i></div><h3 class="text-xl font-bold text-slate-800">Evidencia Fotográfica</h3></div><div class="bg-slate-50 rounded-2xl p-6"><div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-slate-700 mb-4">Foto General de la Moto</label>
+                            <div class="file-input-wrapper w-full">
+                                <button type="button" class="file-input-btn w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                                    <i data-lucide="camera" class="w-12 h-12 mb-4"></i>
+                                    <span>Tomar foto o seleccionar</span>
+                                    <span class="text-sm mt-2">Desde cámara o galería</span>
+                                </button>
+                                <input type="file" id="general-photo" accept="image/*" capture="environment">
+                            </div>
+                            <div id="general-photo-preview" class="mt-4 hidden">
+                                <p class="text-slate-700 mb-2">Vista previa:</p>
+                                <div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200 relative photo-preview-container">
+                                    <img id="general-photo-img" class="w-full h-full object-cover" alt="Vista previa foto general">
+                                    <button type="button" class="remove-photo-btn" data-target="general-photo" title="Eliminar foto">
+                                        <i data-lucide="x" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-slate-700 mb-4">Foto del Serial del Chasis</label>
+                            <div class="file-input-wrapper w-full">
+                                <button type="button" class="file-input-btn w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                                    <i data-lucide="camera" class="w-12 h-12 mb-4"></i>
+                                    <span>Tomar foto o seleccionar</span>
+                                    <span class="text-sm mt-2">Desde cámara o galería</span>
+                                </button>
+                                <input type="file" id="chassis-photo" accept="image/*" capture="environment">
+                            </div>
+                            <div id="chassis-photo-preview" class="mt-4 hidden">
+                                <p class="text-slate-700 mb-2">Vista previa:</p>
+                                <div class="w-full h-48 rounded-xl overflow-hidden bg-slate-200 relative photo-preview-container">
+                                    <img id="chassis-photo-img" class="w-full h-full object-cover" alt="Vista previa serial chasis">
+                                    <button type="button" class="remove-photo-btn" data-target="chassis-photo" title="Eliminar foto">
+                                        <i data-lucide="x" class="w-5 h-5"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div></div></div>
                     
                     <div class="mt-10"><div class="flex items-center mb-6"><div class="w-10 h-10 rounded-2xl bg-emerald-100 flex items-center justify-center mr-3"><i data-lucide="file-text" class="text-emerald-700"></i></div><h3 class="text-xl font-bold text-slate-800">Condiciones del Servicio</h3></div><div class="bg-slate-50 rounded-2xl p-6 max-h-60 overflow-y-auto custom-scrollbar"><p class="text-slate-700 mb-4">Al registrar mi vehículo en el taller, acepto las siguientes condiciones:</p><ol class="list-decimal pl-5 space-y-2 text-slate-700"><li>Autorizo al taller para realizar las reparaciones necesarias en mi vehículo.</li><li>Comprendo que el costo final puede variar según las piezas requeridas y el tiempo de mano de obra.</li><li>Acepto que el taller no se hace responsable por objetos de valor dejados dentro del vehículo.</li><li>Autorizo al taller a realizar pruebas de funcionamiento necesarias para verificar las reparaciones.</li><li>Me comprometo a retirar el vehículo dentro de los 15 días hábiles posteriores a la notificación de culminación del servicio.</li><li>Para retirar el vehículo debo presentar mi documento de identificación y la orden de servicio.</li></ol></div><div class="mt-6 flex items-center"><input type="checkbox" id="accept-terms" required class="w-5 h-5 mr-3 rounded-lg"><label for="accept-terms" class="text-slate-700">He leído y acepto las condiciones del servicio *</label></div></div>
                     
@@ -221,7 +328,16 @@
             </div>
             <div class="flex-1 overflow-y-auto p-6 custom-scrollbar">
                 <div id="tab-info" class="modal-tab-content"></div>
-                <div id="tab-progress" class="modal-tab-content hidden"><div class="space-y-6"><div><h4 class="text-lg font-bold text-slate-800 mb-4">Notas Técnicas</h4><textarea id="technical-notes" rows="4" class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase-textarea" placeholder="Registre aquí las observaciones técnicas, diagnósticos y reparaciones realizadas..."></textarea></div><div><h4 class="text-lg font-bold text-slate-800 mb-4">Horas de Trabajo</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div><label class="block text-slate-700 mb-2">Horas estimadas</label><input type="number" id="estimated-hours" min="0" step="0.5" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-slate-700 mb-2">Horas reales</label><input type="number" id="actual-hours" min="0" step="0.5" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-slate-700 mb-2">Técnico asignado</label><input type="text" id="assigned-technician" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase-input"></div></div></div><div><h4 class="text-lg font-bold text-slate-800 mb-4">Evidencia de Reparación</h4><div class="bg-slate-50 rounded-2xl p-6"><div class="file-input-wrapper"><button type="button" id="add-repair-photo" class="w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600"><i data-lucide="camera" class="w-12 h-12 mb-4"></i><span>Agregar fotos de la reparación</span><span class="text-sm mt-2">Máx. 5 fotos</span></button><input type="file" id="repair-photos" accept="image/*" capture="environment" multiple class="w-full h-full"></div><div id="repair-photos-preview" class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div></div></div></div></div>
+                <div id="tab-progress" class="modal-tab-content hidden"><div class="space-y-6"><div><h4 class="text-lg font-bold text-slate-800 mb-4">Notas Técnicas</h4><textarea id="technical-notes" rows="4" class="w-full p-4 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase-textarea" placeholder="Registre aquí las observaciones técnicas, diagnósticos y reparaciones realizadas..."></textarea></div><div><h4 class="text-lg font-bold text-slate-800 mb-4">Horas de Trabajo</h4><div class="grid grid-cols-1 md:grid-cols-3 gap-4"><div><label class="block text-slate-700 mb-2">Horas estimadas</label><input type="number" id="estimated-hours" min="0" step="0.5" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-slate-700 mb-2">Horas reales</label><input type="number" id="actual-hours" min="0" step="0.5" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500"></div><div><label class="block text-slate-700 mb-2">Técnico asignado</label><input type="text" id="assigned-technician" class="w-full p-3 border border-slate-300 rounded-2xl focus:outline-none focus:ring-2 focus:ring-emerald-500 uppercase-input"></div></div></div><div><h4 class="text-lg font-bold text-slate-800 mb-4">Evidencia de Reparación</h4><div class="bg-slate-50 rounded-2xl p-6"><div class="file-input-wrapper w-full">
+                        <button type="button" id="add-repair-photo" class="file-input-btn w-full p-8 border-2 border-dashed border-slate-300 rounded-2xl hover:border-emerald-500 transition-all duration-300 flex flex-col items-center justify-center text-slate-500 hover:text-emerald-600">
+                            <i data-lucide="camera" class="w-12 h-12 mb-4"></i>
+                            <span>Tomar foto o seleccionar</span>
+                            <span class="text-sm mt-2">Máx. 5 fotos</span>
+                        </button>
+                        <input type="file" id="repair-photos" accept="image/*" capture="environment" multiple>
+                    </div>
+                    <div id="repair-photos-preview" class="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4"></div>
+                </div></div></div></div>
                 <div id="tab-management" class="modal-tab-content hidden"><div class="space-y-6"><div><h4 class="text-lg font-bold text-slate-800 mb-4">Costos de Reparación</h4><div class="grid grid-cols-1 md:grid-cols-2 gap-6"><div class="bg-slate-50 rounded-2xl p-6"><h5 class="font-bold text-slate-800 mb-4">Costos de Partes</h5><div id="parts-costs" class="space-y-4"></div><button id="add-part-cost" class="mt-4 px-4 py-2 border-2 border-emerald-600 text-emerald-700 rounded-2xl hover:bg-emerald-50 font-medium flex items-center"><i data-lucide="plus" class="mr-2"></i>Agregar parte</button></div><div class="bg-slate-50 rounded-2xl p-6"><h5 class="font-bold text-slate-800 mb-4">Resumen de Costos</h5><div class="space-y-3"><div class="flex justify-between items-center"><span class="text-slate-700">Mano de obra</span><div class="flex gap-2"><input type="number" id="labor-hours" min="0" step="0.5" value="0" class="w-20 p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Horas"><span class="text-slate-700">x</span><input type="number" id="labor-rate" min="0" step="0.01" value="0" class="w-24 p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500" placeholder="Tarifa/h"><span class="font-medium" id="labor-cost">$0.00</span></div></div><div class="flex justify-between"><span class="text-slate-700">Partes, repuestos y servicios</span><span id="parts-total" class="font-medium">$0.00</span></div><div class="flex justify-between"><span class="text-slate-700">Otros gastos</span><input type="number" id="other-costs" min="0" step="0.01" value="0" class="w-32 p-2 border border-slate-300 rounded-xl text-right focus:outline-none focus:ring-1 focus:ring-emerald-500"></div><div class="pt-3 border-t border-slate-300 flex justify-between"><span class="text-slate-800 font-bold">Total</span><span id="total-cost" class="text-xl font-bold text-emerald-700">$0.00</span></div></div></div></div></div><div><h4 class="text-lg font-bold text-slate-800 mb-4">Estado de la Orden</h4><div class="flex flex-wrap gap-4"><button class="status-btn px-5 py-2.5 bg-slate-200 text-slate-700 rounded-2xl font-medium hover:bg-slate-300" data-status="pending">Pendiente</button><button class="status-btn px-5 py-2.5 bg-amber-100 text-amber-800 rounded-2xl font-medium hover:bg-amber-200" data-status="in-progress">En Proceso</button><button class="status-btn px-5 py-2.5 bg-emerald-100 text-emerald-800 rounded-2xl font-medium hover:bg-emerald-200" data-status="completed">Completada</button></div></div><div class="pt-6 border-t border-slate-200"><div class="flex justify-between items-center"><button id="generate-technical-report" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 shadow-lg font-medium flex items-center"><i data-lucide="file-text" class="mr-2"></i>Generar Informe Técnico (PDF)</button><button id="save-order-changes" class="px-6 py-3 bg-gradient-to-r from-slate-800 to-slate-900 text-white rounded-2xl hover:from-slate-900 hover:to-slate-950 shadow-lg font-medium flex items-center"><i data-lucide="save" class="mr-2"></i>Guardar Cambios</button></div></div></div></div>
                 <div id="tab-spareparts" class="modal-tab-content hidden"><div class="space-y-6"><div class="flex justify-between items-center mb-4"><h4 class="text-lg font-bold text-slate-800">Lista de Repuestos Requeridos</h4><button id="add-sparepart" class="px-4 py-2 bg-emerald-600 text-white rounded-2xl hover:bg-emerald-700 font-medium flex items-center"><i data-lucide="plus" class="mr-2 w-4 h-4"></i>Agregar Repuesto</button></div><div class="bg-slate-50 rounded-2xl p-4"><div class="overflow-x-auto"><table class="w-full"><thead><tr class="border-b border-slate-300"><th class="text-left p-3 text-slate-700 font-bold">Descripción del Repuesto</th><th class="text-left p-3 text-slate-700 font-bold w-24">Cantidad</th><th class="text-left p-3 text-slate-700 font-bold">Observaciones</th><th class="text-left p-3 text-slate-700 font-bold w-12"></th></tr></thead><tbody id="spareparts-list"><tr class="text-slate-500"><td colspan="4" class="p-4 text-center">No hay repuestos agregados. Haga clic en "Agregar Repuesto" para comenzar.</td></tr></tbody></table></div></div><div class="pt-6 border-t border-slate-200 flex justify-end"><button id="generate-spareparts-pdf" class="px-6 py-3 bg-gradient-to-r from-emerald-600 to-emerald-700 text-white rounded-2xl hover:from-emerald-700 hover:to-emerald-800 shadow-lg font-medium flex items-center"><i data-lucide="file-text" class="mr-2"></i>Generar Solicitud de Repuestos (PDF)</button></div></div></div>
             </div>
@@ -318,7 +434,10 @@
         function renderChecklist() {
             const container = document.querySelector('#reception-form .grid.gap-3');
             container.innerHTML = '';
-            const toggleCheck = (cb) => { cb.checked = !cb.checked; cb.dispatchEvent(new Event('change')); };
+            const toggleCheck = (cb) => { 
+                cb.checked = !cb.checked; 
+                cb.dispatchEvent(new Event('change')); 
+            };
             checklistItems.forEach(cat => {
                 const header = document.createElement('div');
                 header.className = 'col-span-full mb-3 mt-4 first:mt-0';
@@ -328,20 +447,30 @@
                     const id = `check-${item.replace(/\s+/g, '-').toLowerCase()}`;
                     const div = document.createElement('div');
                     div.className = 'checklist-item';
-                    div.innerHTML = `<label for="${id}" class="checklist-label block p-3 bg-gray-50 rounded-xl border border-gray-200 hover:bg-emerald-50 hover:border-emerald-100 transition-all duration-200 cursor-pointer group"><div class="flex items-start"><input type="checkbox" id="${id}" class="checklist-checkbox mt-1 mr-3 w-4 h-4 accent-emerald-600 cursor-pointer"><span class="text-xs font-bold uppercase text-gray-700 group-hover:text-emerald-800 tracking-tight leading-tight">${item}</span></div></label>`;
+                    div.innerHTML = `<label for="${id}" class="checklist-label block p-3 bg-gray-50 rounded-xl border border-gray-200 hover:bg-emerald-50 hover:border-emerald-100 transition-all duration-200 cursor-pointer group"><div class="flex items-start"><input type="checkbox" id="${id}" class="checklist-checkbox mt-1 mr-3 w-5 h-5 accent-emerald-600 cursor-pointer"><span class="text-xs font-bold uppercase text-gray-700 group-hover:text-emerald-800 tracking-tight leading-tight">${item}</span></div></label>`;
                     container.appendChild(div);
                     const label = div.querySelector('.checklist-label');
                     const cb = div.querySelector('.checklist-checkbox');
-                    // Click en toda la label activa el checkbox
+                    // Click en toda la label activa el checkbox - Mejorado para móvil
                     label.addEventListener('click', function(e) {
-                        // Si el click fue directamente en el checkbox, no hacer nada porque ya se maneja solo
+                        // Si el click fue en el checkbox, no hacer nada para evitar doble toggle
                         if (e.target === cb) return;
+                        e.preventDefault();
                         toggleCheck(cb);
+                    });
+                    // También permitir click directo en el checkbox
+                    cb.addEventListener('click', function(e) {
+                        e.stopPropagation();
                     });
                     cb.addEventListener('change', function() {
                         const lbl = this.closest('.checklist-label');
-                        if(this.checked) { lbl.classList.add('bg-emerald-100', 'border-emerald-300'); lbl.classList.remove('bg-gray-50', 'border-gray-200'); }
-                        else { lbl.classList.remove('bg-emerald-100', 'border-emerald-300'); lbl.classList.add('bg-gray-50', 'border-gray-200'); }
+                        if(this.checked) { 
+                            lbl.classList.add('bg-emerald-100', 'border-emerald-300'); 
+                            lbl.classList.remove('bg-gray-50', 'border-gray-200'); 
+                        } else { 
+                            lbl.classList.remove('bg-emerald-100', 'border-emerald-300'); 
+                            lbl.classList.add('bg-gray-50', 'border-gray-200'); 
+                        }
                     });
                 });
             });
@@ -353,15 +482,19 @@
         
         function setupPhotoRemoval() {
             document.querySelectorAll('.remove-photo-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const targetId = this.dataset.target;
-                    if (targetId === 'general-photo') {
-                        removeReceptionPhoto('general');
-                    } else if (targetId === 'chassis-photo') {
-                        removeReceptionPhoto('chassis');
-                    }
-                });
+                // Remover listeners anteriores para evitar duplicados
+                btn.removeEventListener('click', handleRemovePhoto);
+                btn.addEventListener('click', handleRemovePhoto);
             });
+        }
+        
+        function handleRemovePhoto(e) {
+            const targetId = this.dataset.target;
+            if (targetId === 'general-photo') {
+                removeReceptionPhoto('general');
+            } else if (targetId === 'chassis-photo') {
+                removeReceptionPhoto('chassis');
+            }
         }
         
         function removeReceptionPhoto(type) {
@@ -373,7 +506,7 @@
             const preview = document.getElementById(previewId);
             const img = document.getElementById(imgId);
             
-            input.value = '';
+            if (input) input.value = '';
             if (img) img.src = '';
             if (preview) preview.classList.add('hidden');
             
@@ -387,16 +520,32 @@
         function saveReceptionOrder() {
             const orderId = generateOrderId();
             const checklistStatus = {};
-            checklistItems.forEach(cat => cat.items.forEach(item => { const cb = document.getElementById(`check-${item.replace(/\s+/g, '-').toLowerCase()}`); if(cb) checklistStatus[item] = cb.checked; }));
+            checklistItems.forEach(cat => cat.items.forEach(item => { 
+                const cb = document.getElementById(`check-${item.replace(/\s+/g, '-').toLowerCase()}`); 
+                if(cb) checklistStatus[item] = cb.checked; 
+            }));
             
             // Obtener las imágenes como base64
             const generalImg = document.getElementById('general-photo-img');
             const chassisImg = document.getElementById('chassis-photo-img');
             
             const newOrder = {
-                id: orderId, date: new Date().toISOString(),
-                owner: { name: document.getElementById('owner-name').value, id: document.getElementById('owner-id').value, phone: document.getElementById('owner-phone').value, email: document.getElementById('owner-email').value },
-                motorcycle: { plate: document.getElementById('motorcycle-plate').value, model: document.getElementById('motorcycle-model').value, km: document.getElementById('motorcycle-km').value, year: document.getElementById('motorcycle-year').value, chassis: document.getElementById('motorcycle-chassis').value, engine: document.getElementById('motorcycle-engine').value },
+                id: orderId, 
+                date: new Date().toISOString(),
+                owner: { 
+                    name: document.getElementById('owner-name').value, 
+                    id: document.getElementById('owner-id').value, 
+                    phone: document.getElementById('owner-phone').value, 
+                    email: document.getElementById('owner-email').value 
+                },
+                motorcycle: { 
+                    plate: document.getElementById('motorcycle-plate').value, 
+                    model: document.getElementById('motorcycle-model').value, 
+                    km: document.getElementById('motorcycle-km').value, 
+                    year: document.getElementById('motorcycle-year').value, 
+                    chassis: document.getElementById('motorcycle-chassis').value, 
+                    engine: document.getElementById('motorcycle-engine').value 
+                },
                 checklist: checklistStatus,
                 clientReport: document.getElementById('client-report').value,
                 technicalObservations: document.getElementById('technical-observations').value,
@@ -410,19 +559,39 @@
                 spareparts: [],
                 termsAccepted: true
             };
+            
             const required = ['owner-name','owner-id','owner-phone','motorcycle-plate','motorcycle-model','motorcycle-year','client-report'];
-            if(required.some(f => !document.getElementById(f).value.trim())) { showNotification('Complete todos los campos requeridos.', 'error'); return; }
-            if(!document.getElementById('accept-terms').checked) { showNotification('Debe aceptar los términos del servicio.', 'error'); return; }
-            orders.unshift(newOrder);
-            localStorage.setItem('belmotos-orders', JSON.stringify(orders));
-            showNotification(`Orden #${orderId} creada.`, 'success');
-            generateReceptionPDF(newOrder);
-            document.getElementById('reception-form').reset();
-            document.getElementById('general-photo-preview').classList.add('hidden');
-            document.getElementById('chassis-photo-preview').classList.add('hidden');
-            document.querySelectorAll('.checklist-checkbox').forEach(cb => { cb.checked = false; const lbl = cb.closest('.checklist-label'); if(lbl) { lbl.classList.remove('bg-emerald-100', 'border-emerald-300'); lbl.classList.add('bg-gray-50', 'border-gray-200'); } });
-            setupUppercaseInputs();
-            switchView('orders');
+            if(required.some(f => !document.getElementById(f).value.trim())) { 
+                showNotification('Complete todos los campos requeridos.', 'error'); 
+                return; 
+            }
+            if(!document.getElementById('accept-terms').checked) { 
+                showNotification('Debe aceptar los términos del servicio.', 'error'); 
+                return; 
+            }
+            
+            try {
+                orders.unshift(newOrder);
+                localStorage.setItem('belmotos-orders', JSON.stringify(orders));
+                showNotification(`Orden #${orderId} creada.`, 'success');
+                generateReceptionPDF(newOrder);
+                document.getElementById('reception-form').reset();
+                document.getElementById('general-photo-preview').classList.add('hidden');
+                document.getElementById('chassis-photo-preview').classList.add('hidden');
+                document.querySelectorAll('.checklist-checkbox').forEach(cb => { 
+                    cb.checked = false; 
+                    const lbl = cb.closest('.checklist-label'); 
+                    if(lbl) { 
+                        lbl.classList.remove('bg-emerald-100', 'border-emerald-300'); 
+                        lbl.classList.add('bg-gray-50', 'border-gray-200'); 
+                    } 
+                });
+                setupUppercaseInputs();
+                switchView('orders');
+            } catch (error) {
+                console.error('Error al guardar la orden:', error);
+                showNotification('Error al guardar la orden. Intente nuevamente.', 'error');
+            }
         }
         
         function deleteOrder(orderId) {
@@ -498,10 +667,10 @@
                 order.progress.repairPhotos.forEach((photo, idx) => {
                     const div = document.createElement('div');
                     div.className = 'relative photo-preview-container';
-                    div.innerHTML = `<div class="rounded-xl overflow-hidden h-32 bg-slate-200"><img src="${photo}" class="w-full h-full object-cover"></div><button class="remove-photo-btn" data-index="${idx}" style="position:absolute;top:-8px;right:-8px;width:28px;height:28px;border-radius:50%;background:#ef4444;color:white;border:2px solid white;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;box-shadow:0 2px 4px rgba(0,0,0,0.2);"><i data-lucide="x" class="w-4 h-4"></i></button>`;
+                    div.innerHTML = `<div class="rounded-xl overflow-hidden h-32 bg-slate-200"><img src="${photo}" class="w-full h-full object-cover"></div><button class="repair-photo-remove" data-index="${idx}" title="Eliminar foto"><i data-lucide="x" class="w-5 h-5"></i></button>`;
                     container.appendChild(div);
                 });
-                container.querySelectorAll('.remove-photo-btn').forEach(btn => btn.addEventListener('click', () => removeRepairPhoto(parseInt(btn.dataset.index))));
+                container.querySelectorAll('.repair-photo-remove').forEach(btn => btn.addEventListener('click', () => removeRepairPhoto(parseInt(btn.dataset.index))));
             }
             lucide.createIcons();
         }
@@ -532,7 +701,7 @@
         
         function loadOrderSparepartsTab(order) {
             const container = document.getElementById('spareparts-list');
-            if(!order.spareparts?.length) { container.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No hay repuestos. Agregue uno.</td></table>'; return; }
+            if(!order.spareparts?.length) { container.innerHTML = '<tr><td colspan="4" class="p-4 text-center text-slate-500">No hay repuestos. Agregue uno.</td></tr>'; return; }
             container.innerHTML = order.spareparts.map((p, idx) => `<tr class="border-b"><td class="p-3"><input type="text" value="${p.description || ''}" class="sparepart-desc w-full p-2 border rounded-xl uppercase-input" data-index="${idx}" placeholder="Descripción"></td><td class="p-3"><input type="number" value="${p.quantity || 1}" min="1" class="sparepart-qty w-24 p-2 border rounded-xl text-center" data-index="${idx}"></td><td class="p-3"><input type="text" value="${p.observations || ''}" class="sparepart-obs w-full p-2 border rounded-xl uppercase-input" data-index="${idx}" placeholder="Observaciones"></td><td class="p-3 text-center"><button class="remove-sparepart-btn w-8 h-8 rounded-xl hover:bg-red-50 text-red-600" data-index="${idx}"><i data-lucide="trash-2" class="w-4 h-4"></i></button></td></tr>`).join('');
             container.querySelectorAll('.sparepart-desc, .sparepart-qty, .sparepart-obs').forEach(inp => inp.addEventListener('change', function() { const o = orders.find(o=>o.id===currentEditOrderId); if(o?.spareparts) { const i=parseInt(this.dataset.index); if(this.classList.contains('sparepart-desc')) o.spareparts[i].description=this.value; else if(this.classList.contains('sparepart-qty')) o.spareparts[i].quantity=parseInt(this.value)||1; else o.spareparts[i].observations=this.value; localStorage.setItem('belmotos-orders',JSON.stringify(orders)); } }));
             container.querySelectorAll('.remove-sparepart-btn').forEach(btn => btn.addEventListener('click', () => removeSparepart(parseInt(btn.dataset.index))));
@@ -859,7 +1028,9 @@
         document.addEventListener('DOMContentLoaded', () => {
             setupUppercaseInputs();
             renderChecklist();
-            setupPhotoRemoval();
+            
+            // Configurar eliminación de fotos al cargar
+            setTimeout(setupPhotoRemoval, 100);
             
             if(orders.length) renderOrdersList();
             else document.getElementById('empty-orders-message').classList.remove('hidden');
@@ -882,41 +1053,65 @@
             });
             
             // Configuración de inputs de foto con captura de cámara
-            document.getElementById('general-photo').addEventListener('change', e => {
-                if(e.target.files[0]){
-                    const r=new FileReader();
-                    r.onload=ev=>{
-                        document.getElementById('general-photo-img').src=ev.target.result;
+            const generalPhotoInput = document.getElementById('general-photo');
+            const chassisPhotoInput = document.getElementById('chassis-photo');
+            
+            generalPhotoInput.addEventListener('change', function(e) {
+                if(e.target.files && e.target.files[0]){
+                    const r = new FileReader();
+                    r.onload = function(ev) {
+                        document.getElementById('general-photo-img').src = ev.target.result;
                         document.getElementById('general-photo-preview').classList.remove('hidden');
-                        setupPhotoRemoval();
-                    };
-                    r.readAsDataURL(e.target.files[0]);
-                }
-            });
-            document.getElementById('chassis-photo').addEventListener('change', e => {
-                if(e.target.files[0]){
-                    const r=new FileReader();
-                    r.onload=ev=>{
-                        document.getElementById('chassis-photo-img').src=ev.target.result;
-                        document.getElementById('chassis-photo-preview').classList.remove('hidden');
-                        setupPhotoRemoval();
+                        setTimeout(setupPhotoRemoval, 50);
                     };
                     r.readAsDataURL(e.target.files[0]);
                 }
             });
             
-            document.getElementById('repair-photos').addEventListener('change', e => {
+            chassisPhotoInput.addEventListener('change', function(e) {
+                if(e.target.files && e.target.files[0]){
+                    const r = new FileReader();
+                    r.onload = function(ev) {
+                        document.getElementById('chassis-photo-img').src = ev.target.result;
+                        document.getElementById('chassis-photo-preview').classList.remove('hidden');
+                        setTimeout(setupPhotoRemoval, 50);
+                    };
+                    r.readAsDataURL(e.target.files[0]);
+                }
+            });
+            
+            // Foto de reparación
+            document.getElementById('repair-photos').addEventListener('change', function(e) {
                 const order = orders.find(o=>o.id===currentEditOrderId);
-                if(!order) return;
+                if(!order) {
+                    showNotification('No hay una orden seleccionada.', 'warning');
+                    this.value = '';
+                    return;
+                }
                 if(!order.progress.repairPhotos) order.progress.repairPhotos = [];
                 const files = Array.from(e.target.files);
                 const maxFiles = 5;
                 const remaining = maxFiles - order.progress.repairPhotos.length;
-                if(files.length > remaining) { showNotification(`Máximo ${maxFiles} fotos. Puede agregar ${remaining} más.`, 'warning'); return; }
-                for(let i=0; i<Math.min(files.length, remaining); i++){
-                    const r=new FileReader(); r.onload=ev=>{ order.progress.repairPhotos.push(ev.target.result); loadOrderProgressTab(order); localStorage.setItem('belmotos-orders', JSON.stringify(orders)); }; r.readAsDataURL(files[i]);
+                if(files.length > remaining) { 
+                    showNotification(`Máximo ${maxFiles} fotos. Puede agregar ${remaining} más.`, 'warning'); 
+                    this.value = '';
+                    return; 
                 }
-                e.target.value = '';
+                let loaded = 0;
+                for(let i=0; i<Math.min(files.length, remaining); i++){
+                    const r = new FileReader();
+                    r.onload = function(ev) {
+                        order.progress.repairPhotos.push(ev.target.result);
+                        loaded++;
+                        if(loaded === Math.min(files.length, remaining)) {
+                            loadOrderProgressTab(order);
+                            localStorage.setItem('belmotos-orders', JSON.stringify(orders));
+                            showNotification(`${loaded} foto(s) agregada(s).`, 'success');
+                        }
+                    };
+                    r.readAsDataURL(files[i]);
+                }
+                this.value = '';
             });
             
             document.getElementById('add-part-cost').addEventListener('click', () => {
@@ -945,7 +1140,10 @@
             document.getElementById('generate-technical-report').addEventListener('click', () => { if(currentEditOrderId) generateTechnicalReport(currentEditOrderId); });
             document.getElementById('add-sparepart').addEventListener('click', addSparepart);
             document.getElementById('generate-spareparts-pdf').addEventListener('click', generateSparepartsPDF);
-            document.getElementById('reception-form').addEventListener('submit', e => { e.preventDefault(); saveReceptionOrder(); });
+            document.getElementById('reception-form').addEventListener('submit', function(e) { 
+                e.preventDefault(); 
+                saveReceptionOrder(); 
+            });
             
             document.querySelectorAll('input[type="checkbox"][id$="toggle"]').forEach(t => t.addEventListener('change', function() {
                 const label = this.nextElementSibling, dot = label.nextElementSibling;
